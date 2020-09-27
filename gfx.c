@@ -13,7 +13,6 @@ Version 2, 9/23/2011 - Fixes a bug that could result in jerky animation.
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
 #include "gfx.h"
 
@@ -123,7 +122,8 @@ void gfx_line_bres(int x1, int y1, int x2, int y2)
 	int y = y1, x = x1;
 	unsigned int oct = find_octant(x1, y1, x2, y2);
 	switch(oct){
-		case 0: // 1st octant
+		/* octant 1 */
+		case 0: 
 			y = y1;
 			for (x = x1; x < x2; x++) {
 				gfx_point(x, y);
@@ -134,6 +134,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2)
 				}
 			}
 			break;
+		/* octant 2 */
 		case 1:
 			x = x1;
 			for (y = y1; y < y2; y++) {
@@ -145,6 +146,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2)
 				}
 			}
 			break;
+		/* octant 3 */
 		case 2:
 			x = x1;
 			for (y = y1; y < y2; y++) {
@@ -156,6 +158,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2)
 				}
 			}
 			break;
+		/* octant 4 */
 		case 3:
 			y = y1;
 			for (x = x1; x > x2; x--) {
@@ -167,6 +170,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2)
 				}
 			}
 			break;
+		/* octant 5 */
 		case 4:
 			y = y1;
 			for (x = x1; x > x2; x--) {
@@ -178,6 +182,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2)
 				}
 			}
 			break;
+		/* octant 6 */
 		case 5:
 			x = x1;
 			for (y = y1; y > y2; y--) {
@@ -189,6 +194,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2)
 				}
 			}
 			break;
+		/* octant 6 */
 		case 6:
 			x = x1;
 			for (y = y1; y > y2; y--) {
@@ -200,6 +206,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2)
 				}
 			}
 			break;
+		/* octant 6 */
 		case 7:
 			y = y1;
 			for (x = x1; x < x2; x++) {
@@ -211,6 +218,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2)
 				}
 			}
 			break;
+		/* octant 7 */
 		case 8:
 			if (y1 < y2){
 				for (y = y1; y < y2; y++) {
