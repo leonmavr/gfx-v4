@@ -15,6 +15,7 @@ Version 2, 9/23/2011 - Fixes a bug that could result in jerky animation.
 #include <stdlib.h>
 
 #include "gfx.h"
+#include "queue.h" 
 
 /*
 gfx_open creates several X11 objects, and stores them in globals
@@ -113,20 +114,25 @@ static unsigned int find_octant(int x1, int y1, int x2, int y2) {
 
 
 /* Draw a line from (x1,y1) to (x2,y2) using Bresenham's */
-void gfx_line_bres(int x1, int y1, int x2, int y2)
+void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 {
 	int dx = x2 - x1;
 	int dy = y2 - y1;
 	float m = (float)dy/dx;
 	int err = 0;
 	int y = y1, x = x1;
+	Point pt;
 	unsigned int oct = find_octant(x1, y1, x2, y2);
-	switch(oct){
+	switch(oct) {
 		/* octant 1 */
 		case 0: 
 			y = y1;
 			for (x = x1; x < x2; x++) {
 				gfx_point(x, y);
+				pt.x = x;
+				pt.y = y;
+				pt.valid = 1;
+				append(q, pt);
 				err += dy;
 				if (2*err >= dx){
 					err -= dx;
@@ -139,6 +145,10 @@ void gfx_line_bres(int x1, int y1, int x2, int y2)
 			x = x1;
 			for (y = y1; y < y2; y++) {
 				gfx_point(x, y);
+				pt.x = x;
+				pt.y = y;
+				pt.valid = 1;
+				append(q, pt);
 				err += dx;
 				if (2*err >= dy){
 					err -= dy;
@@ -151,6 +161,10 @@ void gfx_line_bres(int x1, int y1, int x2, int y2)
 			x = x1;
 			for (y = y1; y < y2; y++) {
 				gfx_point(x, y);
+				pt.x = x;
+				pt.y = y;
+				pt.valid = 1;
+				append(q, pt);
 				err -= dx;
 				if (2*err >= dy){
 					err -= dy;
@@ -163,6 +177,10 @@ void gfx_line_bres(int x1, int y1, int x2, int y2)
 			y = y1;
 			for (x = x1; x > x2; x--) {
 				gfx_point(x, y);
+				pt.x = x;
+				pt.y = y;
+				pt.valid = 1;
+				append(q, pt);
 				err += dy;
 				if (2*err >= -dx){
 					err += dx;
@@ -175,6 +193,10 @@ void gfx_line_bres(int x1, int y1, int x2, int y2)
 			y = y1;
 			for (x = x1; x > x2; x--) {
 				gfx_point(x, y);
+				pt.x = x;
+				pt.y = y;
+				pt.valid = 1;
+				append(q, pt);
 				err -= dy;
 				if (2*err >= -dx){
 					err += dx;
@@ -187,6 +209,10 @@ void gfx_line_bres(int x1, int y1, int x2, int y2)
 			x = x1;
 			for (y = y1; y > y2; y--) {
 				gfx_point(x, y);
+				pt.x = x;
+				pt.y = y;
+				pt.valid = 1;
+				append(q, pt);
 				err -= dx;
 				if (2*err >= -dy){
 					err -= dy;
@@ -199,6 +225,10 @@ void gfx_line_bres(int x1, int y1, int x2, int y2)
 			x = x1;
 			for (y = y1; y > y2; y--) {
 				gfx_point(x, y);
+				pt.x = x;
+				pt.y = y;
+				pt.valid = 1;
+				append(q, pt);
 				err += dx;
 				if (2*err >= -dy){
 					err += dy;
@@ -211,6 +241,10 @@ void gfx_line_bres(int x1, int y1, int x2, int y2)
 			y = y1;
 			for (x = x1; x < x2; x++) {
 				gfx_point(x, y);
+				pt.x = x;
+				pt.y = y;
+				pt.valid = 1;
+				append(q, pt);
 				err -= dy;
 				if (2*err >= dx){
 					err -= dx;
@@ -223,10 +257,18 @@ void gfx_line_bres(int x1, int y1, int x2, int y2)
 			if (y1 < y2){
 				for (y = y1; y < y2; y++) {
 					gfx_point(x, y);	
+					pt.x = x;
+					pt.y = y;
+					pt.valid = 1;
+					append(q, pt);
 				}
 			} else {
 				for (y = y2; y < y1; y++) {
 					gfx_point(x, y);	
+					pt.x = x;
+					pt.y = y;
+					pt.valid = 1;
+					append(q, pt);
 				}
 			}
 			break;

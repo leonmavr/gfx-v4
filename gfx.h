@@ -13,6 +13,7 @@ Version 2, 9/23/2011 - Fixes a bug that could result in jerky animation.
 #ifndef GFX_H
 #define GFX_H
 
+#include "queue.h" 
 /* Open a new graphics window. */
 void gfx_open( int width, int height, const char *title );
 
@@ -25,7 +26,7 @@ void gfx_line( int x1, int y1, int x2, int y2 );
 /* Draw line in a naive way */
 void gfx_naive_line(int x1, int y1, int x2, int y2);
 
-void gfx_line_bres(int x1, int y1, int x2, int y2);
+void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q);
 
 /* Change the current drawing color. */
 void gfx_color( int red, int green, int blue );

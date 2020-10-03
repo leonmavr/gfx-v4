@@ -6,6 +6,7 @@ by Prof. Thain
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "gfx.h"
 
 int main()
@@ -27,17 +28,14 @@ int main()
 	//gfx_line(150,150,100,100);
 	
 	// Draw line
+	Queue* q = malloc(sizeof(Queue));
+	init(q);
 	gfx_color(50,200,0);
-	gfx_line_bres(100,100, 80, 160);
-	gfx_line_bres(100,100, 20, 120);
-	gfx_line_bres(100,100, 20, 80);
-	gfx_line_bres(100,100, 80, 20);
-	gfx_line_bres(100,100, 140, 20);
-	gfx_line_bres(100,100, 160, 80);
-	gfx_color(200, 50,0);
-	gfx_line(97,97, 140, 20);
-	gfx_line(95,97, 160, 80);
-	//gfx_line(8, 18, 320, 50);
+	gfx_line_bres(100,100, 80, 160, q);
+	printQueue(q);
+	gfx_color(200,50,0);
+	gfx_line(96,96, 80, 160);
+	del(q);
 
 	while(1) {
 		// Wait for the user to press a character.
