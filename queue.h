@@ -1,5 +1,5 @@
-#ifndef LIST_H
-#define LIST_H 
+#ifndef QUEUE_H
+#define QUEUE_H 
 
 
 typedef struct point_t {
@@ -27,4 +27,4 @@ Point pop(Queue* queue);
 void printPoint(Point pt);
 unsigned int printQueue(Queue* queue);
 
-#endif /* LIST_H */
+#endif /* QUEUE_H */
