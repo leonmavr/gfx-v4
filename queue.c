@@ -124,9 +124,10 @@ unsigned int del(Queue* queue) {
 	if (iter == NULL)
 		return ERROR_CANNOT_ALLOC;
 	// do the work
-	do {
+	while (queue->head != NULL){
 		iter = queue->head;
 		queue->head = queue->head->next;
 		free(iter);
-	} while (queue -> head != NULL);
+	} 
+	return NO_ERROR;
 }

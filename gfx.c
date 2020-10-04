@@ -286,7 +286,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
  *
  * @return a Queue pointer whose y's are all sequentially incremented
  */
-Queue* gfx_removeDuplYs(Queue* q){
+static Queue* gfx_removeDuplYs(Queue* q){
 	Queue* qFinal = malloc(sizeof(Queue));
 	init(qFinal);
 	Point ptOld = {.x=0, .y=0, .valid=0};
@@ -302,6 +302,7 @@ Queue* gfx_removeDuplYs(Queue* q){
 	return qFinal;
 }
 
+
 void gfx_triangle_fill(int x1, int  y1, int x2, int y2, int x3,int y3) {
 	/*
 	 *                           X (x1, y1)
@@ -316,6 +317,9 @@ void gfx_triangle_fill(int x1, int  y1, int x2, int y2, int x3,int y3) {
 	 *                         \|
 	 *                          X (x3, y3)
 	 */ 
+	/*****************************************
+	 * Initialisation 
+	 *****************************************/
 	assert((y1 <= y2) && (y2 <= y3));
 	Queue* q1, *q2, *q3, *qBuff;
 	Queue* q1new, *q2new, *q3new;
@@ -328,6 +332,9 @@ void gfx_triangle_fill(int x1, int  y1, int x2, int y2, int x3,int y3) {
 	init(q3);
 	init(qBuff);
 
+	/*****************************************
+	 * Main work (rasterisation)
+	 *****************************************/
 	gfx_line_bres(x1, y1, x2, y2, q1);
 	gfx_line_bres(x2, y2, x3, y3, q2);
 	gfx_line_bres(x1, y1, x3, y3, q3);
@@ -356,11 +363,22 @@ void gfx_triangle_fill(int x1, int  y1, int x2, int y2, int x3,int y3) {
 		}
 	}
 	
-	// TODO: sort out the segmentation error below
-	//del(q1);
+	/*****************************************
+	 * Cleanup
+	 *****************************************/
+	del(q1);
+	del(q2);
+	del(q3);
+	del(q1new);
+	del(q2new);
+	del(q3new);
+	del(qBuff);
 	free(q1);
 	free(q2);
 	free(q3);
+	free(q1new);
+	free(q2new);
+	free(q3new);
 	free(qBuff);
 }
 
