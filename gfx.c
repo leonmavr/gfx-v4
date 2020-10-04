@@ -347,20 +347,19 @@ void gfx_triangle_fill(int x1, int  y1, int x2, int y2, int x3,int y3) {
 	Point pt23 = {.x=0,.y=0,.valid=1};
 	Point pt13 = {.x=0,.y=0,.valid=1};
 
-	int y;
 	Point pt = {.x=0, .y=0, .valid=0};
+	int y;
 	for (y = y1; (pt13.valid == 1) &&  (y < y3);){
 		if (y < y2){
 			pt12 = pop(q1new);
 			pt13 = pop(q3new);
 			gfx_line_bres(pt12.x, pt12.y, pt13.x, pt13.y, qBuff);
-			y++;
 		} else{
 			pt23 = pop(q2new);
 			pt13 = pop(q3new);
 			gfx_line_bres(pt23.x, pt23.y, pt13.x, pt13.y, qBuff);
-			y++;
 		}
+		y++;
 	}
 	
 	/*****************************************
