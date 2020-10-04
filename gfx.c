@@ -1,9 +1,9 @@
 /*
-A simple graphics library for CSE 20211 by Douglas Thain
+   A simple graphics library for CSE 20211 by Douglas Thain
 
-This work is licensed under a Creative Commons Attribution 4.0 International License.  https://creativecommons.org/licenses/by/4.0/
+   This work is licensed under a Creative Commons Attribution 4.0 International License.  https://creativecommons.org/licenses/by/4.0/
 
-For complete documentation, see:
+   For complete documentation, see:
 http://www.nd.edu/~dthain/courses/cse20211/fall2013/gfx
 Version 3, 11/07/2012 - Now much faster at changing colors rapidly.
 Version 2, 9/23/2011 - Fixes a bug that could result in jerky animation.
@@ -13,14 +13,15 @@ Version 2, 9/23/2011 - Fixes a bug that could result in jerky animation.
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "gfx.h"
 #include "queue.h" 
 
 /*
-gfx_open creates several X11 objects, and stores them in globals
-for use by the other functions in the library.
-*/
+   gfx_open creates several X11 objects, and stores them in globals
+   for use by the other functions in the library.
+   */
 
 static Display *gfx_display=0;
 static Window  gfx_window;
@@ -140,7 +141,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				}
 			}
 			break;
-		/* octant 2 */
+			/* octant 2 */
 		case 1:
 			x = x1;
 			for (y = y1; y < y2; y++) {
@@ -156,7 +157,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				}
 			}
 			break;
-		/* octant 3 */
+			/* octant 3 */
 		case 2:
 			x = x1;
 			for (y = y1; y < y2; y++) {
@@ -172,7 +173,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				}
 			}
 			break;
-		/* octant 4 */
+			/* octant 4 */
 		case 3:
 			y = y1;
 			for (x = x1; x > x2; x--) {
@@ -188,7 +189,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				}
 			}
 			break;
-		/* octant 5 */
+			/* octant 5 */
 		case 4:
 			y = y1;
 			for (x = x1; x > x2; x--) {
@@ -204,7 +205,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				}
 			}
 			break;
-		/* octant 6 */
+			/* octant 6 */
 		case 5:
 			x = x1;
 			for (y = y1; y > y2; y--) {
@@ -220,7 +221,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				}
 			}
 			break;
-		/* octant 6 */
+			/* octant 6 */
 		case 6:
 			x = x1;
 			for (y = y1; y > y2; y--) {
@@ -236,7 +237,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				}
 			}
 			break;
-		/* octant 6 */
+			/* octant 6 */
 		case 7:
 			y = y1;
 			for (x = x1; x < x2; x++) {
@@ -252,7 +253,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				}
 			}
 			break;
-		/* octant 7 */
+			/* octant 7 */
 		case 8:
 			if (y1 < y2){
 				for (y = y1; y < y2; y++) {
@@ -275,6 +276,93 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 	}
 }
 
+
+/**
+ * @brief Given a Queue of points, if it encounters consecutive points
+ * with the same y, keeps only the last one. This is required for triangle
+ * rasterisation.
+ *
+ * @param q pointer to Queue
+ *
+ * @return a Queue pointer whose y's are all sequentially incremented
+ */
+Queue* gfx_removeDuplYs(Queue* q){
+	Queue* qFinal = malloc(sizeof(Queue));
+	init(qFinal);
+	Point ptOld = {.x=0, .y=0, .valid=0};
+	Point pt = {.x=0, .y=0, .valid=0};
+
+	do{
+		pt = pop(q);
+		if((pt.y != ptOld.y) && (pt.valid == 1)) 
+			append(qFinal, pt);
+		ptOld = pt;
+	} while (pt.valid == 1);
+
+	return qFinal;
+}
+
+void gfx_triangle_fill(int x1, int  y1, int x2, int y2, int x3,int y3) {
+	/*
+	 *                           X (x1, y1)
+	 *                          /| 
+	 *                         / |
+	 *                        /  |
+	 *                       /  |
+	 *             (x2,y2)  X   |
+	 *                      \   |
+	 *                       \  |
+	 *                        \ |
+	 *                         \|
+	 *                          X (x3, y3)
+	 */ 
+	assert((y1 <= y2) && (y2 <= y3));
+	Queue* q1, *q2, *q3, *qBuff;
+	Queue* q1new, *q2new, *q3new;
+	q1 = malloc(sizeof(Queue));
+	q2 = malloc(sizeof(Queue));
+	q3 = malloc(sizeof(Queue));
+	qBuff = malloc(sizeof(Queue));
+	init(q1);
+	init(q2);
+	init(q3);
+	init(qBuff);
+
+	gfx_line_bres(x1, y1, x2, y2, q1);
+	gfx_line_bres(x2, y2, x3, y3, q2);
+	gfx_line_bres(x1, y1, x3, y3, q3);
+
+	q1new = gfx_removeDuplYs(q1);
+	q2new = gfx_removeDuplYs(q2);
+	q3new = gfx_removeDuplYs(q3);
+
+	Point pt12 = {.x=0,.y=0,.valid=1};
+	Point pt23 = {.x=0,.y=0,.valid=1};
+	Point pt13 = {.x=0,.y=0,.valid=1};
+
+	int y;
+	Point pt = {.x=0, .y=0, .valid=0};
+	for (y = y1; (pt13.valid == 1) &&  (y < y3);){
+		if (y < y2){
+			pt12 = pop(q1new);
+			pt13 = pop(q3new);
+			gfx_line_bres(pt12.x, pt12.y, pt13.x, pt13.y, qBuff);
+			y++;
+		} else{
+			pt23 = pop(q2new);
+			pt13 = pop(q3new);
+			gfx_line_bres(pt23.x, pt23.y, pt13.x, pt13.y, qBuff);
+			y++;
+		}
+	}
+	
+	// TODO: sort out the segmentation error below
+	//del(q1);
+	free(q1);
+	free(q2);
+	free(q3);
+	free(qBuff);
+}
 
 /* Draw a line from (x1,y1) to (x2,y2) */
 
@@ -329,25 +417,25 @@ void gfx_clear_color( int r, int g, int b )
 
 int gfx_event_waiting()
 {
-       XEvent event;
+	XEvent event;
 
-       gfx_flush();
+	gfx_flush();
 
-       while (1) {
-               if(XCheckMaskEvent(gfx_display,-1,&event)) {
-                       if(event.type==KeyPress) {
-                               XPutBackEvent(gfx_display,&event);
-                               return 1;
-                       } else if (event.type==ButtonPress) {
-                               XPutBackEvent(gfx_display,&event);
-                               return 1;
-                       } else {
-                               return 0;
-                       }
-               } else {
-                       return 0;
-               }
-       }
+	while (1) {
+		if(XCheckMaskEvent(gfx_display,-1,&event)) {
+			if(event.type==KeyPress) {
+				XPutBackEvent(gfx_display,&event);
+				return 1;
+			} else if (event.type==ButtonPress) {
+				XPutBackEvent(gfx_display,&event);
+				return 1;
+			} else {
+				return 0;
+			}
+		} else {
+			return 0;
+		}
+	}
 }
 
 /* Wait for the user to press a key or mouse button. */

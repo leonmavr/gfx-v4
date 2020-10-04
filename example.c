@@ -32,9 +32,9 @@ int main()
 	init(q);
 	gfx_color(50,200,0);
 	gfx_line_bres(100,100, 80, 160, q);
-	printQueue(q);
 	gfx_color(200,50,0);
 	gfx_line(96,96, 80, 160);
+	gfx_triangle_fill(200, 10, 40, 30, 300, 50);
 	del(q);
 
 	while(1) {

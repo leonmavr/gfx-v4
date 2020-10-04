@@ -26,7 +26,11 @@ void gfx_line( int x1, int y1, int x2, int y2 );
 /* Draw line in a naive way */
 void gfx_naive_line(int x1, int y1, int x2, int y2);
 
+/* Draw line using Bresenham's */
 void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q);
+
+/* Fill triangle */
+void gfx_triangle_fill(int x1, int y1, int x2, int y2, int x3, int y3);
 
 /* Change the current drawing color. */
 void gfx_color( int red, int green, int blue );
