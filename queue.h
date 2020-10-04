@@ -23,7 +23,6 @@ unsigned int del(Queue * queue);
 void init(Queue* queue);
 unsigned int isEmpty(Queue* queue);
 Point pop(Queue* queue);
-//unsigned int pop(Queue* queue);
 void printPoint(Point pt);
 unsigned int printQueue(Queue* queue);
 
