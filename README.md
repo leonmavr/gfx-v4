@@ -14,3 +14,7 @@ Run with
 ```
 ./example
 ```
+Clean generated executables and object files with:
+```
+make clean
+```
