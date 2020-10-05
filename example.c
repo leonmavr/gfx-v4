@@ -29,13 +29,13 @@ int main()
 	
 	// Draw line
 	Queue* q = malloc(sizeof(Queue));
-	init(q);
+	queue_init(q);
 	gfx_color(50,200,0);
 	gfx_line_bres(100,100, 80, 160, q);
 	gfx_color(200,50,0);
 	gfx_line(96,96, 80, 160);
 	gfx_triangle_fill(200, 10, 40, 30, 300, 50);
-	del(q);
+	queue_del(q);
 
 	while(1) {
 		// Wait for the user to press a character.

@@ -18,12 +18,12 @@ typedef struct queue_t {
 	PointNode* tail;
 } Queue;
 
-unsigned int append(Queue* queue, Point pt);
-unsigned int del(Queue * queue);
-void init(Queue* queue);
-unsigned int isEmpty(Queue* queue);
-Point pop(Queue* queue);
-void printPoint(Point pt);
-unsigned int printQueue(Queue* queue);
+unsigned int queue_append(Queue* queue, Point pt);
+unsigned int queue_del(Queue * queue);
+void queue_init(Queue* queue);
+unsigned int queue_isEmpty(Queue* queue);
+Point queue_pop(Queue* queue);
+void point_print(Point pt);
+unsigned int queue_print(Queue* queue);
 
 #endif /* QUEUE_H */

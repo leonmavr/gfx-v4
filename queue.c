@@ -10,7 +10,7 @@ enum {
 } ErrorCodes;
 
 
-void printPoint(Point pt) {
+void point_print(Point pt) {
 	printf("(%u, %u) ", pt.x, pt.y);
 }
 
@@ -19,13 +19,13 @@ void printPoint(Point pt) {
  *
  * @param queue A queue to initialise
  */
-void init(Queue* queue) {
+void queue_init(Queue* queue) {
 	queue->head = NULL;
 	queue->tail = NULL;
 }
 
 
-unsigned int isEmpty(Queue* queue) {
+unsigned int queue_isEmpty(Queue* queue) {
 	return queue->head == queue->tail;
 }
 
@@ -38,7 +38,7 @@ unsigned int isEmpty(Queue* queue) {
  *
  * @return A positive integer if error, else 0
  */
-unsigned int append(Queue* queue, Point pt) {
+unsigned int queue_append(Queue* queue, Point pt) {
 	// check for errors
 	PointNode* next = malloc(sizeof(PointNode));
 	if (next == NULL)
@@ -66,15 +66,15 @@ unsigned int append(Queue* queue, Point pt) {
  *
  * @return A positive integer if error, else 0
  */
-unsigned int printQueue(Queue* queue) {
-	if (isEmpty(queue)) 
+unsigned int queue_print(Queue* queue) {
+	if (queue_isEmpty(queue)) 
 		return ERROR_LIST_EMPTY;
 	PointNode* iter = queue->head;
 	if (iter == NULL)
 		return ERROR_CANNOT_ALLOC;
 	// do the work
 	do { 
-		printPoint(iter->pt);
+		point_print(iter->pt);
 		iter  = iter->next;
 	} while (iter != NULL);
 
@@ -89,7 +89,7 @@ unsigned int printQueue(Queue* queue) {
  *
  * @return A valid point (x, y, 1) if queue non empty, else invalid point, i.e. (x, y, 0)
  */
-Point pop(Queue* queue) {
+Point queue_pop(Queue* queue) {
 	// if head next not null
 	PointNode* tmp = queue->head;
 	Point ret;
@@ -110,15 +110,15 @@ Point pop(Queue* queue) {
 
 
 /**
- * @brief del (free) all nodes of the Queue
+ * @brief delete (free) all nodes of the Queue
  *
  * @param queue A Queue
  *
  * @return A positive integer if error, else 0
  */
-unsigned int del(Queue* queue) {
+unsigned int queue_del(Queue* queue) {
 	// check for errors
-	if (isEmpty(queue))
+	if (queue_isEmpty(queue))
 		return ERROR_LIST_EMPTY;
 	PointNode* iter = malloc(sizeof(PointNode));
 	if (iter == NULL)

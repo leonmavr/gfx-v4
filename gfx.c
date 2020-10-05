@@ -133,7 +133,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				pt.x = x;
 				pt.y = y;
 				pt.valid = 1;
-				append(q, pt);
+				queue_append(q, pt);
 				err += dy;
 				if (2*err >= dx){
 					err -= dx;
@@ -149,7 +149,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				pt.x = x;
 				pt.y = y;
 				pt.valid = 1;
-				append(q, pt);
+				queue_append(q, pt);
 				err += dx;
 				if (2*err >= dy){
 					err -= dy;
@@ -165,7 +165,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				pt.x = x;
 				pt.y = y;
 				pt.valid = 1;
-				append(q, pt);
+				queue_append(q, pt);
 				err -= dx;
 				if (2*err >= dy){
 					err -= dy;
@@ -181,7 +181,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				pt.x = x;
 				pt.y = y;
 				pt.valid = 1;
-				append(q, pt);
+				queue_append(q, pt);
 				err += dy;
 				if (2*err >= -dx){
 					err += dx;
@@ -197,7 +197,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				pt.x = x;
 				pt.y = y;
 				pt.valid = 1;
-				append(q, pt);
+				queue_append(q, pt);
 				err -= dy;
 				if (2*err >= -dx){
 					err += dx;
@@ -213,7 +213,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				pt.x = x;
 				pt.y = y;
 				pt.valid = 1;
-				append(q, pt);
+				queue_append(q, pt);
 				err -= dx;
 				if (2*err >= -dy){
 					err -= dy;
@@ -229,7 +229,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				pt.x = x;
 				pt.y = y;
 				pt.valid = 1;
-				append(q, pt);
+				queue_append(q, pt);
 				err += dx;
 				if (2*err >= -dy){
 					err += dy;
@@ -245,7 +245,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				pt.x = x;
 				pt.y = y;
 				pt.valid = 1;
-				append(q, pt);
+				queue_append(q, pt);
 				err -= dy;
 				if (2*err >= dx){
 					err -= dx;
@@ -261,7 +261,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 					pt.x = x;
 					pt.y = y;
 					pt.valid = 1;
-					append(q, pt);
+					queue_append(q, pt);
 				}
 			} else {
 				for (y = y2; y < y1; y++) {
@@ -269,7 +269,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 					pt.x = x;
 					pt.y = y;
 					pt.valid = 1;
-					append(q, pt);
+					queue_append(q, pt);
 				}
 			}
 			break;
@@ -288,14 +288,14 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
  */
 static Queue* gfx_removeDuplYs(Queue* q){
 	Queue* qFinal = malloc(sizeof(Queue));
-	init(qFinal);
+	queue_init(qFinal);
 	Point ptOld = {.x=0, .y=0, .valid=0};
 	Point pt = {.x=0, .y=0, .valid=0};
 
 	do{
-		pt = pop(q);
+		pt = queue_pop(q);
 		if((pt.y != ptOld.y) && (pt.valid == 1)) 
-			append(qFinal, pt);
+			queue_append(qFinal, pt);
 		ptOld = pt;
 	} while (pt.valid == 1);
 
@@ -327,10 +327,10 @@ void gfx_triangle_fill(int x1, int  y1, int x2, int y2, int x3,int y3) {
 	q2 = malloc(sizeof(Queue));
 	q3 = malloc(sizeof(Queue));
 	qBuff = malloc(sizeof(Queue));
-	init(q1);
-	init(q2);
-	init(q3);
-	init(qBuff);
+	queue_init(q1);
+	queue_init(q2);
+	queue_init(q3);
+	queue_init(qBuff);
 
 	/*****************************************
 	 * Main work (rasterisation)
@@ -351,12 +351,12 @@ void gfx_triangle_fill(int x1, int  y1, int x2, int y2, int x3,int y3) {
 	int y;
 	for (y = y1; (pt13.valid == 1) &&  (y < y3);){
 		if (y < y2){
-			pt12 = pop(q1new);
-			pt13 = pop(q3new);
+			pt12 = queue_pop(q1new);
+			pt13 = queue_pop(q3new);
 			gfx_line_bres(pt12.x, pt12.y, pt13.x, pt13.y, qBuff);
 		} else{
-			pt23 = pop(q2new);
-			pt13 = pop(q3new);
+			pt23 = queue_pop(q2new);
+			pt13 = queue_pop(q3new);
 			gfx_line_bres(pt23.x, pt23.y, pt13.x, pt13.y, qBuff);
 		}
 		y++;
@@ -365,13 +365,13 @@ void gfx_triangle_fill(int x1, int  y1, int x2, int y2, int x3,int y3) {
 	/*****************************************
 	 * Cleanup
 	 *****************************************/
-	del(q1);
-	del(q2);
-	del(q3);
-	del(q1new);
-	del(q2new);
-	del(q3new);
-	del(qBuff);
+	queue_del(q1);
+	queue_del(q2);
+	queue_del(q3);
+	queue_del(q1new);
+	queue_del(q2new);
+	queue_del(q3new);
+	queue_del(qBuff);
 	free(q1);
 	free(q2);
 	free(q3);
