@@ -1,6 +1,6 @@
 CC = gcc
-IDIR =./src/include
-CFLAGS = -c -I$(IDIR) 
+IDIR = src/include
+CFLAGS = -c -I$(IDIR) -Wall
 LFLAGS = -lX11
 
 all: example
@@ -15,7 +15,7 @@ gfx.o: src/gfx/gfx.c
 	$(CC) $(CFLAGS) src/gfx/gfx.c
 
 example.o: example.c
-	$(CC) -c example.c
+	$(CC) $(CFLAGS) -c example.c
 
 clean:
 	rm *.o example

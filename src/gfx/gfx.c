@@ -119,7 +119,6 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 {
 	int dx = x2 - x1;
 	int dy = y2 - y1;
-	float m = (float)dy/dx;
 	int err = 0;
 	int y = y1, x = x1;
 	Point pt;
@@ -347,7 +346,6 @@ void gfx_triangle_fill(int x1, int  y1, int x2, int y2, int x3,int y3) {
 	Point pt23 = {.x=0,.y=0,.valid=1};
 	Point pt13 = {.x=0,.y=0,.valid=1};
 
-	Point pt = {.x=0, .y=0, .valid=0};
 	int y;
 	for (y = y1; (pt13.valid == 1) &&  (y < y3);){
 		if (y < y2){
