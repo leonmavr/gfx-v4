@@ -55,7 +55,7 @@ unsigned int queue_append(Queue* queue, Point pt) {
 		queue->tail->next = next;
 		queue->tail = next;
 	}
-
+	return NO_ERROR;
 }
 
 
@@ -79,6 +79,7 @@ unsigned int queue_print(Queue* queue) {
 	} while (iter != NULL);
 
 	free(iter);
+	return NO_ERROR;
 }
 
 
