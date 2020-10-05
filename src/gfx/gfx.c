@@ -91,7 +91,7 @@ void gfx_point( int x, int y )
 }
 
 
-static unsigned int find_octant(int x1, int y1, int x2, int y2) {
+static unsigned int gfx_findOctant(int x1, int y1, int x2, int y2) {
 	if (x1 == x2)
 		return 8;
 	float m = (float)(y2 - y1)/(x2 - x1);
@@ -109,7 +109,7 @@ static unsigned int find_octant(int x1, int y1, int x2, int y2) {
 		return 5;
 	else if ((y2 <= y1) && (m < -1))
 		return 6;
-	else if ((x1 <= x2) && (-1 <= m) && (m <= 0))
+	else // ((x1 <= x2) && (-1 <= m) && (m <= 0))
 		return 7;
 }
 
@@ -122,7 +122,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 	int err = 0;
 	int y = y1, x = x1;
 	Point pt;
-	unsigned int oct = find_octant(x1, y1, x2, y2);
+	unsigned int oct = gfx_findOctant(x1, y1, x2, y2);
 	switch(oct) {
 		/* octant 1 */
 		case 0: 
@@ -140,7 +140,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				}
 			}
 			break;
-			/* octant 2 */
+		/* octant 2 */
 		case 1:
 			x = x1;
 			for (y = y1; y < y2; y++) {
@@ -156,7 +156,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				}
 			}
 			break;
-			/* octant 3 */
+		/* octant 3 */
 		case 2:
 			x = x1;
 			for (y = y1; y < y2; y++) {
@@ -172,7 +172,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				}
 			}
 			break;
-			/* octant 4 */
+		/* octant 4 */
 		case 3:
 			y = y1;
 			for (x = x1; x > x2; x--) {
@@ -188,7 +188,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				}
 			}
 			break;
-			/* octant 5 */
+		/* octant 5 */
 		case 4:
 			y = y1;
 			for (x = x1; x > x2; x--) {
@@ -204,7 +204,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				}
 			}
 			break;
-			/* octant 6 */
+		/* octant 6 */
 		case 5:
 			x = x1;
 			for (y = y1; y > y2; y--) {
@@ -220,7 +220,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				}
 			}
 			break;
-			/* octant 6 */
+		/* octant 6 */
 		case 6:
 			x = x1;
 			for (y = y1; y > y2; y--) {
@@ -236,7 +236,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				}
 			}
 			break;
-			/* octant 6 */
+		/* octant 6 */
 		case 7:
 			y = y1;
 			for (x = x1; x < x2; x++) {
@@ -252,8 +252,8 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				}
 			}
 			break;
-			/* octant 7 */
-		case 8:
+		/* octant 7 */
+		default:
 			if (y1 < y2){
 				for (y = y1; y < y2; y++) {
 					gfx_point(x, y);	
