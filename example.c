@@ -33,12 +33,6 @@ int main()
 	gfx_color(200,50,0);
 	int i;
 	for (i = 0; i < 40; i++) {
-		if (i/2 == 0){
-			gfx_color(200,50,0); printf("here\n");
-		}
-		else{
-			gfx_color(50,100,0); printf("there\n");
-		}
 		gfx_triangle_fill(pt1.x, pt1.y, pt2.x, pt2.y, pt3.x, pt3.y);
 		rotateTriangle(&pt1, &pt2, &pt3, 5);
 		gfx_flush();
