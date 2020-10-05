@@ -8,6 +8,8 @@ by Prof. Thain
 #include <stdio.h>
 #include <stdlib.h>
 #include "gfx.h"
+#include "rotations.h" 
+#include <unistd.h> 
 
 int main()
 {
@@ -22,19 +24,27 @@ int main()
 	// Set the current drawing color to green.
 	gfx_color(0,200,100);
 
-	// Draw a triangle on the screen.
-	//gfx_line(100,100,200,100);
-	//gfx_line(200,100,150,150);
-	//gfx_line(150,150,100,100);
-	
 	// Draw line
 	Queue* q = malloc(sizeof(Queue));
 	queue_init(q);
 	gfx_color(50,200,0);
-	gfx_line_bres(100,100, 80, 160, q);
+	Point pt1 = {200, 200, 1}, pt2 = {250, 240,1}, pt3 = {190, 260, 1};
+	//gfx_triangle_fill(pt1.x, pt1.y, pt2.x, pt2.y, pt3.x, pt3.y);
 	gfx_color(200,50,0);
-	gfx_line(96,96, 80, 160);
-	gfx_triangle_fill(200, 10, 40, 30, 300, 50);
+	int i;
+	for (i = 0; i < 40; i++) {
+		if (i/2 == 0){
+			gfx_color(200,50,0); printf("here\n");
+		}
+		else{
+			gfx_color(50,100,0); printf("there\n");
+		}
+		gfx_triangle_fill(pt1.x, pt1.y, pt2.x, pt2.y, pt3.x, pt3.y);
+		rotateTriangle(&pt1, &pt2, &pt3, 5);
+		gfx_flush();
+		sleep(1.0);
+		gfx_clear();
+	}
 	queue_del(q);
 
 	while(1) {

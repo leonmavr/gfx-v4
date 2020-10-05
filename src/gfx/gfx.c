@@ -18,6 +18,12 @@ Version 2, 9/23/2011 - Fixes a bug that could result in jerky animation.
 #include "gfx.h"
 #include "queue.h" 
 
+
+/*
+ * Generic swap - original at https://rosettacode.org/wiki/Generic_swap#C
+ */
+#define SWAP(X,Y)  do{ __typeof__ (X) _T = X; X = Y; Y = _T; }while(0)
+
 /*
    gfx_open creates several X11 objects, and stores them in globals
    for use by the other functions in the library.
@@ -302,6 +308,7 @@ static Queue* gfx_removeDuplYs(Queue* q){
 }
 
 
+
 void gfx_triangle_fill(int x1, int  y1, int x2, int y2, int x3,int y3) {
 	/*
 	 *                           X (x1, y1)
@@ -319,7 +326,20 @@ void gfx_triangle_fill(int x1, int  y1, int x2, int y2, int x3,int y3) {
 	/*****************************************
 	 * Initialisation 
 	 *****************************************/
-	assert((y1 <= y2) && (y2 <= y3));
+	// Ensure y1 <= y2 <= y3 
+	if (y1 > y3){
+		SWAP(y1, y2);
+		SWAP(x1, x2);
+	}
+	if (y1 > y2){
+		SWAP(y1, y2);
+		SWAP(x1, x2);
+	}
+	if (y2 > y3){
+		SWAP(y2, y3);
+		SWAP(x2, x3);
+	}
+	
 	Queue* q1, *q2, *q3, *qBuff;
 	Queue* q1new, *q2new, *q3new;
 	q1 = malloc(sizeof(Queue));
