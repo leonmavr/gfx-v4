@@ -15,7 +15,7 @@ gfx.o: src/gfx/gfx.c
 	$(CC) $(CFLAGS) src/gfx/gfx.c
 
 example.o: example.c
-	$(CC) $(CFLAGS) -c example.c
+	$(CC) $(CFLAGS) example.c
 
 clean:
 	rm *.o example
