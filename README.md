@@ -8,7 +8,7 @@ The library has been modified by adding an implementation of Bresenham's line dr
 ## How to compile
 On Linux, compile with
 ```
-gcc -Isrc/include  src/queue/queue.c src/gfx/gfx.c example.c -o example -lX11
+make
 ```
 Run with
 ```
