@@ -115,7 +115,7 @@ static unsigned int gfx_findOctant(int x1, int y1, int x2, int y2) {
 		return 5;
 	else if ((y2 <= y1) && (m < -1))
 		return 6;
-	else // ((x1 <= x2) && (-1 <= m) && (m <= 0))
+	else // if ((x1 <= x2) && (-1 <= m) && (m <= 0))
 		return 7;
 }
 
@@ -328,8 +328,8 @@ void gfx_triangle_fill(int x1, int  y1, int x2, int y2, int x3,int y3) {
 	 *****************************************/
 	// Ensure y1 <= y2 <= y3 
 	if (y1 > y3){
-		SWAP(y1, y2);
-		SWAP(x1, x2);
+		SWAP(y1, y3);
+		SWAP(x1, x3);
 	}
 	if (y1 > y2){
 		SWAP(y1, y2);
