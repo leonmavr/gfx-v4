@@ -15,8 +15,8 @@ void geo_point_print(Point pt) {
 void geo_rotate(Point* pt, float deg) {
 	int x = pt->x, y = pt->y;
 	// TODO: precompute sine at 0-90 deg to optimise
-	float f_xNew = round(x*cos(DEG2RAD(deg)) + y*sin(DEG2RAD(deg)));
-	float f_yNew = round(-x*sin(DEG2RAD(deg)) + y*cos(DEG2RAD(deg)));
+	int f_xNew = round(x*cos(DEG2RAD(deg)) + y*sin(DEG2RAD(deg)));
+	int f_yNew = round(-x*sin(DEG2RAD(deg)) + y*cos(DEG2RAD(deg)));
 	pt->x = f_xNew; // cast to uint
 	pt->y = f_yNew; // cast to uint
 	pt->valid = 1 ? ((f_xNew < 0) || (f_yNew < 0)) : 0;
