@@ -6,7 +6,7 @@ LFLAGS = -lX11 -lm
 all: example
 
 example: queue.o gfx.o example.o geometry.o
-	$(CC) $(LFLAGS) queue.o gfx.o example.o geometry.o -o example
+	$(CC) queue.o gfx.o example.o geometry.o -o example $(LFLAGS) 
 
 queue.o: src/queue/queue.c
 	$(CC) $(CFLAGS) src/queue/queue.c
