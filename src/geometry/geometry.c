@@ -1,7 +1,6 @@
-#include "queue.h"
-#include "gfx.h"
 #include <math.h>
 #include <stdio.h>
+#include "queue.h" 
 
 #define PI 3.1415926535
 #define DEG2RAD(DEG) ((DEG) * PI / 180.0)
