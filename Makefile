@@ -5,8 +5,8 @@ LFLAGS = -lX11 -lm
 
 all: example
 
-example: queue.o gfx.o example.o rotations.o
-	$(CC) $(LFLAGS) queue.o gfx.o example.o rotations.o -o example
+example: queue.o gfx.o example.o geometry.o
+	$(CC) $(LFLAGS) queue.o gfx.o example.o geometry.o -o example
 
 queue.o: src/queue/queue.c
 	$(CC) $(CFLAGS) src/queue/queue.c
@@ -14,8 +14,8 @@ queue.o: src/queue/queue.c
 gfx.o: src/gfx/gfx.c
 	$(CC) $(CFLAGS) src/gfx/gfx.c
 
-rotations.o: src/rotations/rotations.c
-	$(CC) $(CFLAGS) src/rotations/rotations.c
+geometry.o: src/geometry/geometry.c
+	$(CC) $(CFLAGS) src/geometry/geometry.c
 
 example.o: example.c
 	$(CC) $(CFLAGS) example.c

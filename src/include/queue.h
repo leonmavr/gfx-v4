@@ -1,12 +1,8 @@
 #ifndef QUEUE_H
 #define QUEUE_H 
 
+#include "geometry.h" // struct Point
 
-typedef struct point_t {
-	unsigned int x;
-	unsigned int y;
-	unsigned int valid;
-} Point;
 
 typedef struct node_t {
 	Point pt;
@@ -23,7 +19,6 @@ unsigned int queue_del(Queue * queue);
 void queue_init(Queue* queue);
 unsigned int queue_isEmpty(Queue* queue);
 Point queue_pop(Queue* queue);
-void point_print(Point pt);
 unsigned int queue_print(Queue* queue);
 
 #endif /* QUEUE_H */

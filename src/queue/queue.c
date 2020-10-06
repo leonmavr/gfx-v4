@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "queue.h" 
+#include "geometry.h" 
 
 
 enum {
@@ -9,10 +10,6 @@ enum {
 	ERROR_LIST_EMPTY
 } ErrorCodes;
 
-
-void point_print(Point pt) {
-	printf("(%u, %u) ", pt.x, pt.y);
-}
 
 /**
  * @brief Sets head and tail to null
@@ -74,7 +71,7 @@ unsigned int queue_print(Queue* queue) {
 		return ERROR_CANNOT_ALLOC;
 	// do the work
 	do { 
-		point_print(iter->pt);
+		geo_point_print(iter->pt);
 		iter  = iter->next;
 	} while (iter != NULL);
 

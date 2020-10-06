@@ -8,7 +8,7 @@ by Prof. Thain
 #include <stdio.h>
 #include <stdlib.h>
 #include "gfx.h"
-#include "rotations.h" 
+#include "geometry.h" 
 #include <unistd.h> 
 
 int main()
@@ -32,22 +32,22 @@ int main()
 	//gfx_triangle_fill(pt1.x, pt1.y, pt2.x, pt2.y, pt3.x, pt3.y);
 	gfx_color(200,50,0);
 	int i;
-	for (i = 0; i < 40; i++) {
-		gfx_triangle_fill(pt1.x, pt1.y, pt2.x, pt2.y, pt3.x, pt3.y);
-		rotateTriangle(&pt1, &pt2, &pt3, 5);
-		gfx_flush();
-		sleep(1.0);
-		gfx_clear();
-	}
-	queue_del(q);
 
 	while(1) {
+		for (i = 0; i < 20; i++) {
+			gfx_triangle_fill(pt1.x, pt1.y, pt2.x, pt2.y, pt3.x, pt3.y);
+			geo_rotateTriangle(&pt1, &pt2, &pt3, 5);
+			gfx_flush();
+			sleep(1.0);
+			gfx_clear();
+		}
 		// Wait for the user to press a character.
 		c = gfx_wait();
 
 		// Quit if it is the letter q.
 		if(c=='q') break;
 	}
+	queue_del(q);
 
 	return 0;
 }
