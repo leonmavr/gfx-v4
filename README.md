@@ -5,7 +5,7 @@ A simple 2D graphics library in C for educational purposes. Originally written b
 
 
 The library has been modified by adding an implementation of Bresenham's line drawing algorithm, triangle rasterisation
-based on the latter algorithm, and rotations/translations to be able to animate the drawn shapes.
+based on the latter algorithm, rotations/translations to be able to animate the drawn shapes, as well as adding a Makefile.
 
 ## Folder structure
 Source code is found in src directory. The animation played when the project is compiled and run is found in `example.c`.
