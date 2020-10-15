@@ -138,7 +138,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				pt.x = x;
 				pt.y = y;
 				pt.valid = 1;
-				queue_append(q, pt);
+				queue_append(q, &pt);
 				err += dy;
 				if (2*err >= dx){
 					err -= dx;
@@ -154,7 +154,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				pt.x = x;
 				pt.y = y;
 				pt.valid = 1;
-				queue_append(q, pt);
+				queue_append(q, &pt);
 				err += dx;
 				if (2*err >= dy){
 					err -= dy;
@@ -170,7 +170,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				pt.x = x;
 				pt.y = y;
 				pt.valid = 1;
-				queue_append(q, pt);
+				queue_append(q, &pt);
 				err -= dx;
 				if (2*err >= dy){
 					err -= dy;
@@ -186,7 +186,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				pt.x = x;
 				pt.y = y;
 				pt.valid = 1;
-				queue_append(q, pt);
+				queue_append(q, &pt);
 				err += dy;
 				if (2*err >= -dx){
 					err += dx;
@@ -202,7 +202,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				pt.x = x;
 				pt.y = y;
 				pt.valid = 1;
-				queue_append(q, pt);
+				queue_append(q, &pt);
 				err -= dy;
 				if (2*err >= -dx){
 					err += dx;
@@ -218,7 +218,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				pt.x = x;
 				pt.y = y;
 				pt.valid = 1;
-				queue_append(q, pt);
+				queue_append(q, &pt);
 				err -= dx;
 				if (2*err >= -dy){
 					err -= dy;
@@ -234,7 +234,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				pt.x = x;
 				pt.y = y;
 				pt.valid = 1;
-				queue_append(q, pt);
+				queue_append(q, &pt);
 				err += dx;
 				if (2*err >= -dy){
 					err += dy;
@@ -250,7 +250,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				pt.x = x;
 				pt.y = y;
 				pt.valid = 1;
-				queue_append(q, pt);
+				queue_append(q, &pt);
 				err -= dy;
 				if (2*err >= dx){
 					err -= dx;
@@ -266,7 +266,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 					pt.x = x;
 					pt.y = y;
 					pt.valid = 1;
-					queue_append(q, pt);
+					queue_append(q, &pt);
 				}
 			} else {
 				for (y = y2; y < y1; y++) {
@@ -274,7 +274,7 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 					pt.x = x;
 					pt.y = y;
 					pt.valid = 1;
-					queue_append(q, pt);
+					queue_append(q, &pt);
 				}
 			}
 			break;
@@ -300,7 +300,7 @@ static Queue* gfx_removeDuplYs(Queue* q){
 	do{
 		pt = queue_pop(q);
 		if((pt.y != ptOld.y) && (pt.valid == 1)) 
-			queue_append(qFinal, pt);
+			queue_append(qFinal, &pt);
 		ptOld = pt;
 	} while (pt.valid == 1);
 
