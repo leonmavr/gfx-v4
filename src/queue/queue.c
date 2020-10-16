@@ -36,21 +36,22 @@ unsigned int queue_isEmpty(Queue* queue) {
  * @return A positive integer if error, else 0
  */
 unsigned int queue_append(Queue* queue, Point pt) {
-	// check for errors
-	PointNode* next = malloc(sizeof(PointNode));
-	if (next == NULL)
-		return ERROR_CANNOT_ALLOC;
-	// create next node
-	next->pt = pt;
-	next->next = NULL;
-	// add node to list
 	if (queue->head == NULL) {
+		// add node to empty list
+		PointNode* next = malloc(sizeof(PointNode));
+		if (next == NULL)
+			return ERROR_CANNOT_ALLOC;
+		// create next node
+		next->pt = pt;
+		next->next = NULL;
 		// initialise list with 1 node
 		queue->head = queue->tail = next; 
 	} else {
 		// add to tail
-		queue->tail->next = next;
-		queue->tail = next;
+		queue->tail->next = malloc(sizeof(PointNode));
+		queue->tail->next->next = NULL;
+		queue->tail->next->pt = pt;
+		queue->tail = queue->tail->next;
 	}
 	return NO_ERROR;
 }
