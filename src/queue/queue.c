@@ -35,13 +35,13 @@ unsigned int queue_isEmpty(Queue* queue) {
  *
  * @return A positive integer if error, else 0
  */
-unsigned int queue_append(Queue* queue, Point* pt) {
+unsigned int queue_append(Queue* queue, Point pt) {
 	// check for errors
 	PointNode* next = malloc(sizeof(PointNode));
 	if (next == NULL)
 		return ERROR_CANNOT_ALLOC;
 	// create next node
-	next->pt = *pt;
+	next->pt = pt;
 	next->next = NULL;
 	// add node to list
 	if (queue->head == NULL) {
@@ -118,9 +118,7 @@ unsigned int queue_del(Queue* queue) {
 	// check for errors
 	if (queue_isEmpty(queue))
 		return ERROR_LIST_EMPTY;
-	PointNode* iter = malloc(sizeof(PointNode));
-	if (iter == NULL)
-		return ERROR_CANNOT_ALLOC;
+	PointNode* iter;
 	// do the work
 	while (queue->head != NULL){
 		iter = queue->head;

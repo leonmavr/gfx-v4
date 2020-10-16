@@ -14,7 +14,7 @@ typedef struct queue_t {
 	PointNode* tail;
 } Queue;
 
-unsigned int queue_append(Queue* queue, Point* pt);
+unsigned int queue_append(Queue* queue, Point pt);
 unsigned int queue_del(Queue* queue);
 void queue_init(Queue* queue);
 unsigned int queue_isEmpty(Queue* queue);
