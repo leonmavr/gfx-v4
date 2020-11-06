@@ -1,10 +1,12 @@
 /*
    A simple graphics library for CSE 20211 by Douglas Thain
+   Modified in 202 by Leontios Mavropalias.
 
    This work is licensed under a Creative Commons Attribution 4.0 International License.  https://creativecommons.org/licenses/by/4.0/
 
    For complete documentation, see:
 http://www.nd.edu/~dthain/courses/cse20211/fall2013/gfx
+Version 4, 11/06/2020 - Support drawing triangles and lines
 Version 3, 11/07/2012 - Now much faster at changing colors rapidly.
 Version 2, 9/23/2011 - Fixes a bug that could result in jerky animation.
 */
@@ -362,9 +364,9 @@ void gfx_triangle_fill(int x1, int  y1, int x2, int y2, int x3,int y3) {
 	q2new = gfx_removeDuplYs(q2);
 	q3new = gfx_removeDuplYs(q3);
 
-	Point pt12 = {.x=0,.y=0,.valid=1};
-	Point pt23 = {.x=0,.y=0,.valid=1};
-	Point pt13 = {.x=0,.y=0,.valid=1};
+	Point pt12 = {.x=0, .y=0, .valid=1};
+	Point pt23 = {.x=0, .y=0, .valid=1};
+	Point pt13 = {.x=0, .y=0, .valid=1};
 
 	int y;
 	for (y = y1; (pt13.valid == 1) &&  (y < y3);){
@@ -403,7 +405,7 @@ void gfx_triangle_fill(int x1, int  y1, int x2, int y2, int x3,int y3) {
 
 void gfx_line( int x1, int y1, int x2, int y2 )
 {
-	XDrawLine(gfx_display,gfx_window,gfx_gc,x1,y1,x2,y2);
+	XDrawLine(gfx_display, gfx_window, gfx_gc, x1, y1, x2, y2);
 }
 
 /* Change the current drawing color. */
@@ -421,7 +423,7 @@ void gfx_color( int r, int g, int b )
 		color.red = r<<8;
 		color.green = g<<8;
 		color.blue = b<<8;
-		XAllocColor(gfx_display,gfx_colormap,&color);
+		XAllocColor(gfx_display, gfx_colormap, &color);
 	}
 
 	XSetForeground(gfx_display, gfx_gc, color.pixel);
@@ -457,12 +459,12 @@ int gfx_event_waiting()
 	gfx_flush();
 
 	while (1) {
-		if(XCheckMaskEvent(gfx_display,-1,&event)) {
-			if(event.type==KeyPress) {
-				XPutBackEvent(gfx_display,&event);
+		if(XCheckMaskEvent(gfx_display, -1, &event)) {
+			if(event.type == KeyPress) {
+				XPutBackEvent(gfx_display, &event);
 				return 1;
-			} else if (event.type==ButtonPress) {
-				XPutBackEvent(gfx_display,&event);
+			} else if (event.type == ButtonPress) {
+				XPutBackEvent(gfx_display, &event);
 				return 1;
 			} else {
 				return 0;
@@ -482,13 +484,13 @@ char gfx_wait()
 	gfx_flush();
 
 	while(1) {
-		XNextEvent(gfx_display,&event);
+		XNextEvent(gfx_display, &event);
 
-		if(event.type==KeyPress) {
+		if(event.type == KeyPress) {
 			saved_xpos = event.xkey.x;
 			saved_ypos = event.xkey.y;
 			return XLookupKeysym(&event.xkey,0);
-		} else if(event.type==ButtonPress) {
+		} else if(event.type == ButtonPress) {
 			saved_xpos = event.xkey.x;
 			saved_ypos = event.xkey.y;
 			return event.xbutton.button;
