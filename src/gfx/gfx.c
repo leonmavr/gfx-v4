@@ -1,6 +1,6 @@
 /*
    A simple graphics library for CSE 20211 by Douglas Thain
-   Modified in 202 by Leontios Mavropalias.
+   Modified in 2020 by Leontios Mavropalias.
 
    This work is licensed under a Creative Commons Attribution 4.0 International License.  https://creativecommons.org/licenses/by/4.0/
 
