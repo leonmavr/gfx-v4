@@ -16,7 +16,6 @@ Version 2, 9/23/2011 - Fixes a bug that could result in jerky animation.
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <math.h>
 
 #include "gfx.h"
 #include "queue.h" 
