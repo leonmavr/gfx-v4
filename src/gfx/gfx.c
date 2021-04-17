@@ -16,6 +16,7 @@ Version 2, 9/23/2011 - Fixes a bug that could result in jerky animation.
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <math.h>
 
 #include "gfx.h"
 #include "queue.h" 
@@ -29,8 +30,7 @@ Version 2, 9/23/2011 - Fixes a bug that could result in jerky animation.
 /*
    gfx_open creates several X11 objects, and stores them in globals
    for use by the other functions in the library.
-   */
-
+*/
 static Display *gfx_display=0;
 static Window  gfx_window;
 static GC      gfx_gc;
@@ -38,12 +38,10 @@ static Colormap gfx_colormap;
 static int      gfx_fast_color_mode = 0;
 
 /* These values are saved by gfx_wait then retrieved later by gfx_xpos and gfx_ypos. */
-
 static int saved_xpos = 0;
 static int saved_ypos = 0;
 
 /* Open a new graphics window. */
-
 void gfx_open( int width, int height, const char *title )
 {
 	gfx_display = XOpenDisplay(0);
@@ -68,21 +66,14 @@ void gfx_open( int width, int height, const char *title )
 	attr.backing_store = Always;
 
 	XChangeWindowAttributes(gfx_display,gfx_window,CWBackingStore,&attr);
-
 	XStoreName(gfx_display,gfx_window,title);
-
 	XSelectInput(gfx_display, gfx_window, StructureNotifyMask|KeyPressMask|ButtonPressMask);
-
 	XMapWindow(gfx_display,gfx_window);
-
 	gfx_gc = XCreateGC(gfx_display, gfx_window, 0, 0);
-
 	gfx_colormap = DefaultColormap(gfx_display,0);
-
 	XSetForeground(gfx_display, gfx_gc, whiteColor);
 
 	// Wait for the MapNotify event
-
 	for(;;) {
 		XEvent e;
 		XNextEvent(gfx_display, &e);
@@ -92,7 +83,6 @@ void gfx_open( int width, int height, const char *title )
 }
 
 /* Draw a single point at (x,y) */
-
 void gfx_point( int x, int y )
 {
 	XDrawPoint(gfx_display,gfx_window,gfx_gc,x,y);
@@ -401,15 +391,38 @@ void gfx_triangle_fill(int x1, int  y1, int x2, int y2, int x3,int y3) {
 	free(qBuff);
 }
 
-/* Draw a line from (x1,y1) to (x2,y2) */
 
+/* Triangle fill by line sweep: https://www.cs.princeton.edu/courses/archive/fall00/cs426/lectures/scan/sld013.htm, https://www.youtube.com/watch?v=MIW3ljGisak */ 
+void gfx_triangle_fill_sweep(int x1, int y1, int x2, int y2, int x3, int y3) {
+	float slopeInv13 = (float) (x3 - x1)/(y3 - y1);
+	float slopeInv12 = (float) (x2 - x1)/(y2 - y1);
+	float slopeInv23 = (float) (x3 - x2)/(y3 - y2);
+	float xl = x1, xr = x1;
+	for (int y = y1; y < y2; y++) {
+		for (int x = (int)xl; x < (int)xr; x++) {
+			gfx_point(x, y);
+		}
+		xl += slopeInv13;
+		xr += slopeInv12;
+	}
+	for (int y = y2; y < y3; y++) {
+		for (int x = xl; x < (int)xr; x++) {
+			gfx_point(x, y);
+		}
+		xl += slopeInv13;
+		xr += slopeInv23;
+	}
+}
+
+
+/* Draw a line from (x1,y1) to (x2,y2) */
 void gfx_line( int x1, int y1, int x2, int y2 )
 {
 	XDrawLine(gfx_display, gfx_window, gfx_gc, x1, y1, x2, y2);
 }
 
-/* Change the current drawing color. */
 
+/* Change the current drawing color. */
 void gfx_color( int r, int g, int b )
 {
 	XColor color;
@@ -429,15 +442,15 @@ void gfx_color( int r, int g, int b )
 	XSetForeground(gfx_display, gfx_gc, color.pixel);
 }
 
-/* Clear the graphics window to the background color. */
 
+/* Clear the graphics window to the background color. */
 void gfx_clear()
 {
 	XClearWindow(gfx_display,gfx_window);
 }
 
-/* Change the current background color. */
 
+/* Change the current background color. */
 void gfx_clear_color( int r, int g, int b )
 {
 	XColor color;
@@ -451,6 +464,7 @@ void gfx_clear_color( int r, int g, int b )
 	attr.background_pixel = color.pixel;
 	XChangeWindowAttributes(gfx_display,gfx_window,CWBackPixel,&attr);
 }
+
 
 int gfx_event_waiting()
 {
@@ -475,8 +489,8 @@ int gfx_event_waiting()
 	}
 }
 
-/* Wait for the user to press a key or mouse button. */
 
+/* Wait for the user to press a key or mouse button. */
 char gfx_wait()
 {
 	XEvent event;
@@ -498,8 +512,8 @@ char gfx_wait()
 	}
 }
 
-/* Return the X and Y coordinates of the last event. */
 
+/* Return the X and Y coordinates of the last event. */
 int gfx_xpos()
 {
 	return saved_xpos;
