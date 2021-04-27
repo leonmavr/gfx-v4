@@ -16,6 +16,7 @@ Version 2, 9/23/2011 - Fixes a bug that could result in jerky animation.
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <stdbool.h>
 
 #include "gfx.h"
 #include "queue.h" 
@@ -25,6 +26,8 @@ Version 2, 9/23/2011 - Fixes a bug that could result in jerky animation.
  * Generic swap - original at https://rosettacode.org/wiki/Generic_swap#C
  */
 #define SWAP(X,Y)  do{ __typeof__ (X) _T = X; X = Y; Y = _T; }while(0)
+#define MIN(a,b) (((a)<(b))?(a):(b))
+#define MAX(a,b) (((a)>(b))?(a):(b))
 
 /*
    gfx_open creates several X11 objects, and stores them in globals
@@ -410,6 +413,54 @@ void gfx_triangle_fill_sweep(int x1, int y1, int x2, int y2, int x3, int y3) {
 		}
 		xl += slopeInv13;
 		xr += slopeInv23;
+	}
+}
+
+
+static inline int perp_dotprod(int x1, int y1, int x2, int y2) {
+	return x1*y2 - y1*x2;
+}
+
+
+bool is_interior(int x1, int y1, int x2, int y2, int x3, int y3, int x, int y) {
+	int pp1_x = x1 - x;
+	int pp1_y = y1 - y;
+	int pp2_x = x2 - x;
+	int pp2_y = y2 - y;
+	int pp3_x = x3 - x;
+	int pp3_y = y3 - y;
+	return 
+	// cw case
+	( ((perp_dotprod(pp1_x, pp1_y, pp2_x, pp2_y) < 0) &&
+	(perp_dotprod(pp2_x, pp2_y, pp3_x, pp3_y) < 0) &&
+	(perp_dotprod(pp3_x, pp3_y, pp1_x, pp1_y) < 0))  ||
+	// ccw case
+	((perp_dotprod(pp1_x, pp1_y, pp2_x, pp2_y) > 0) &&
+	(perp_dotprod(pp2_x, pp2_y, pp3_x, pp3_y) > 0) &&
+	(perp_dotprod(pp3_x, pp3_y, pp1_x, pp1_y) > 0)) );
+}
+
+
+void gfx_triangle_fill_int_test(int x1, int y1, int x2, int y2, int x3, int y3) {
+	// Ensure y1 <= y2 <= y3 
+	if (y1 > y3){
+		SWAP(y1, y3);
+		SWAP(x1, x3);
+	}
+	if (y1 > y2){
+		SWAP(y1, y2);
+		SWAP(x1, x2);
+	}
+	if (y2 > y3){
+		SWAP(y2, y3);
+		SWAP(x2, x3);
+	}	
+	int xmin = MIN(MIN(x1, x2), x3);
+	int xmax = MAX(MAX(x1, x2), x3);
+	for (int y = y1; y < y3; ++y) {
+		for (int x = xmin; x < xmax; ++x) {
+			if (is_interior(x1, y1, x2, y2, x3, y3, x, y)) { gfx_point(x, y); }
+		}
 	}
 }
 
