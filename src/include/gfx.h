@@ -15,6 +15,8 @@ Version 4, 10/16/2020 - Add line drawing by Bresenham and triangle fill function
 #define GFX_H
 
 #include "queue.h" 
+
+
 /* Open a new graphics window. */
 void gfx_open( int width, int height, const char *title );
 
@@ -28,7 +30,7 @@ void gfx_line( int x1, int y1, int x2, int y2 );
 void gfx_naive_line(int x1, int y1, int x2, int y2);
 
 /* Draw line using Bresenham's */
-void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q);
+void gfx_line_bres(vec2i* pt1, vec2i* pt2, Queue* q);
 
 /* Fill triangle with Bresenham's */
 void gfx_triangle_fill(int x1, int y1, int x2, int y2, int x3, int y3);

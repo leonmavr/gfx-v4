@@ -91,7 +91,12 @@ void gfx_point( int x, int y )
 }
 
 
-static unsigned int gfx_findOctant(int x1, int y1, int x2, int y2) {
+static unsigned int gfx_findOctant(vec2i* pt1, vec2i* pt2) {
+	int x1 = pt1->x;
+	int y1 = pt1->y;
+	int x2 = pt2->x;
+	int y2 = pt2->y;
+
 	if (x1 == x2)
 		return 8;
 	float m = (float)(y2 - y1)/(x2 - x1);
@@ -115,14 +120,19 @@ static unsigned int gfx_findOctant(int x1, int y1, int x2, int y2) {
 
 
 /* Draw a line from (x1,y1) to (x2,y2) using Bresenham's */
-void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
+void gfx_line_bres(vec2i* pt1, vec2i* pt2, Queue* q)
 {
+	int x1 = pt1->x;
+	int y1 = pt1->y;
+	int x2 = pt2->x;
+	int y2 = pt2->y;
+	
 	int dx = x2 - x1;
 	int dy = y2 - y1;
 	int err = 0;
 	int y = y1, x = x1;
 	Point pt;
-	unsigned int oct = gfx_findOctant(x1, y1, x2, y2);
+	unsigned int oct = gfx_findOctant(pt1, pt2);
 	switch(oct) {
 		/* octant 1 */
 		case 0: 
@@ -131,7 +141,6 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				gfx_point(x, y);
 				pt.x = x;
 				pt.y = y;
-				pt.valid = 1;
 				queue_append(q, pt);
 				err += dy;
 				if (2*err >= dx){
@@ -147,7 +156,6 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				gfx_point(x, y);
 				pt.x = x;
 				pt.y = y;
-				pt.valid = 1;
 				queue_append(q, pt);
 				err += dx;
 				if (2*err >= dy){
@@ -163,7 +171,6 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				gfx_point(x, y);
 				pt.x = x;
 				pt.y = y;
-				pt.valid = 1;
 				queue_append(q, pt);
 				err -= dx;
 				if (2*err >= dy){
@@ -179,7 +186,6 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				gfx_point(x, y);
 				pt.x = x;
 				pt.y = y;
-				pt.valid = 1;
 				queue_append(q, pt);
 				err += dy;
 				if (2*err >= -dx){
@@ -195,7 +201,6 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				gfx_point(x, y);
 				pt.x = x;
 				pt.y = y;
-				pt.valid = 1;
 				queue_append(q, pt);
 				err -= dy;
 				if (2*err >= -dx){
@@ -211,7 +216,6 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				gfx_point(x, y);
 				pt.x = x;
 				pt.y = y;
-				pt.valid = 1;
 				queue_append(q, pt);
 				err -= dx;
 				if (2*err >= -dy){
@@ -227,7 +231,6 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				gfx_point(x, y);
 				pt.x = x;
 				pt.y = y;
-				pt.valid = 1;
 				queue_append(q, pt);
 				err += dx;
 				if (2*err >= -dy){
@@ -243,7 +246,6 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 				gfx_point(x, y);
 				pt.x = x;
 				pt.y = y;
-				pt.valid = 1;
 				queue_append(q, pt);
 				err -= dy;
 				if (2*err >= dx){
@@ -259,7 +261,6 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 					gfx_point(x, y);	
 					pt.x = x;
 					pt.y = y;
-					pt.valid = 1;
 					queue_append(q, pt);
 				}
 			} else {
@@ -267,130 +268,11 @@ void gfx_line_bres(int x1, int y1, int x2, int y2, Queue* q)
 					gfx_point(x, y);	
 					pt.x = x;
 					pt.y = y;
-					pt.valid = 1;
 					queue_append(q, pt);
 				}
 			}
 			break;
 	}
-}
-
-
-/**
- * @brief Given a Queue of points, if it encounters consecutive points
- * with the same y, keeps only the last one. This is required for triangle
- * rasterisation.
- *
- * @param q pointer to Queue
- *
- * @return a Queue pointer whose y's are all sequentially incremented
- */
-static Queue* gfx_removeDuplYs(Queue* q){
-	Queue* qFinal = malloc(sizeof(Queue));
-	queue_init(qFinal);
-	Point ptOld = {.x=0, .y=0, .valid=0};
-	Point pt = {.x=0, .y=0, .valid=0};
-
-	do{
-		pt = queue_pop(q);
-		if((pt.y != ptOld.y) && (pt.valid == 1)) 
-			queue_append(qFinal, pt);
-		ptOld = pt;
-	} while (pt.valid == 1);
-
-	return qFinal;
-}
-
-
-
-void gfx_triangle_fill(int x1, int  y1, int x2, int y2, int x3,int y3) {
-	/*
-	 *                           X (x1, y1)
-	 *                          /| 
-	 *                         / |
-	 *                        /  |
-	 *                       /  |
-	 *             (x2,y2)  X   |
-	 *                      \   |
-	 *                       \  |
-	 *                        \ |
-	 *                         \|
-	 *                          X (x3, y3)
-	 */ 
-	/*****************************************
-	 * Initialisation 
-	 *****************************************/
-	// Ensure y1 <= y2 <= y3 
-	if (y1 > y3){
-		SWAP(y1, y3);
-		SWAP(x1, x3);
-	}
-	if (y1 > y2){
-		SWAP(y1, y2);
-		SWAP(x1, x2);
-	}
-	if (y2 > y3){
-		SWAP(y2, y3);
-		SWAP(x2, x3);
-	}
-	
-	Queue* q1, *q2, *q3, *qBuff;
-	Queue* q1new, *q2new, *q3new;
-	q1 = malloc(sizeof(Queue));
-	q2 = malloc(sizeof(Queue));
-	q3 = malloc(sizeof(Queue));
-	qBuff = malloc(sizeof(Queue));
-	queue_init(q1);
-	queue_init(q2);
-	queue_init(q3);
-	queue_init(qBuff);
-
-	/*****************************************
-	 * Main work (rasterisation)
-	 *****************************************/
-	gfx_line_bres(x1, y1, x2, y2, q1);
-	gfx_line_bres(x2, y2, x3, y3, q2);
-	gfx_line_bres(x1, y1, x3, y3, q3);
-
-	q1new = gfx_removeDuplYs(q1);
-	q2new = gfx_removeDuplYs(q2);
-	q3new = gfx_removeDuplYs(q3);
-
-	Point pt12 = {.x=0, .y=0, .valid=1};
-	Point pt23 = {.x=0, .y=0, .valid=1};
-	Point pt13 = {.x=0, .y=0, .valid=1};
-
-	int y;
-	for (y = y1; (pt13.valid == 1) &&  (y < y3);){
-		if (y < y2){
-			pt12 = queue_pop(q1new);
-			pt13 = queue_pop(q3new);
-			gfx_line_bres(pt12.x, pt12.y, pt13.x, pt13.y, qBuff);
-		} else{
-			pt23 = queue_pop(q2new);
-			pt13 = queue_pop(q3new);
-			gfx_line_bres(pt23.x, pt23.y, pt13.x, pt13.y, qBuff);
-		}
-		y++;
-	}
-	
-	/*****************************************
-	 * Cleanup
-	 *****************************************/
-	queue_del(q1);
-	queue_del(q2);
-	queue_del(q3);
-	queue_del(q1new);
-	queue_del(q2new);
-	queue_del(q3new);
-	queue_del(qBuff);
-	free(q1);
-	free(q2);
-	free(q3);
-	free(q1new);
-	free(q2new);
-	free(q3new);
-	free(qBuff);
 }
 
 

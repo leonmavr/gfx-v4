@@ -37,13 +37,13 @@ int main()
 
 	for (i = 0; i < 15; i++) {
 		gfx_color(50,0,200);
-		gfx_triangle_fill(tr31.x, tr31.y, tr32.x, tr32.y, tr33.x, tr33.y);
+		gfx_triangle_fill_int_test(tr31.x, tr31.y, tr32.x, tr32.y, tr33.x, tr33.y);
 		geo_rotateTriangle(&tr31, &tr32, &tr33, deg_step);
 		gfx_color(50,200,0);
-		gfx_triangle_fill(tr21.x, tr21.y, tr22.x, tr22.y, tr23.x, tr23.y);
+		gfx_triangle_fill_int_test(tr21.x, tr21.y, tr22.x, tr22.y, tr23.x, tr23.y);
 		geo_rotateTriangle(&tr21, &tr22, &tr23, 2*deg_step);
 		gfx_color(200,50,0);
-		gfx_triangle_fill(tr11.x, tr11.y, tr12.x, tr12.y, tr13.x, tr13.y);
+		gfx_triangle_fill_int_test(tr11.x, tr11.y, tr12.x, tr12.y, tr13.x, tr13.y);
 		geo_rotateTriangle(&tr11, &tr12, &tr13, 3*deg_step);
 		gfx_flush();
 		sleep(1);
