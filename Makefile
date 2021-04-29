@@ -1,5 +1,5 @@
 CC = gcc
-IDIR = src/include
+IDIR = include
 CFLAGS = -g -c -I$(IDIR) -Wall
 LFLAGS = -lX11 -lm
 
