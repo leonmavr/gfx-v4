@@ -7,11 +7,11 @@
 #define RAD2DEG(RAD) ((RAD) * 180.0 / PI)
 
 
-void geo_point_print(vec2i pt) {
+void geo_point_print(vec2i_t pt) {
 	printf("(%u, %u) ", pt.x, pt.y);
 }
 
-void geo_rotate(vec2i* pt, float deg) {
+void geo_rotate(vec2i_t* pt, float deg) {
 	int x = pt->x, y = pt->y;
 	// TODO: precompute sine at 0-90 deg to optimise
 	int f_xNew = round(x*cos(DEG2RAD(deg)) + y*sin(DEG2RAD(deg)));
@@ -21,12 +21,12 @@ void geo_rotate(vec2i* pt, float deg) {
 }
 
 
-void geo_shift(vec2i* pt, int x, int y){
+void geo_shift(vec2i_t* pt, int x, int y){
 	pt->x += x;
 	pt->y += y;
 }
 
-void geo_rotateTriangle(vec2i* pt1, vec2i* pt2, vec2i* pt3, float theta) {
+void geo_rotateTriangle(vec2i_t* pt1, vec2i_t* pt2, vec2i_t* pt3, float theta) {
 	int centroidX = (int) (pt1->x + pt2->x + pt3->x)/3;
 	int centroidY = (int) (pt1->y + pt2->y + pt3->y)/3;
 

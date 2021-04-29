@@ -93,7 +93,7 @@ void gfx_point( int x, int y )
 }
 
 
-static unsigned int gfx_findOctant(vec2i* pt1, vec2i* pt2) {
+static unsigned int gfx_findOctant(vec2i_t* pt1, vec2i_t* pt2) {
 	int x1 = pt1->x;
 	int y1 = pt1->y;
 	int x2 = pt2->x;
@@ -122,7 +122,7 @@ static unsigned int gfx_findOctant(vec2i* pt1, vec2i* pt2) {
 
 
 /* Draw a line from (x1,y1) to (x2,y2) using Bresenham's */
-void gfx_line_bres(vec2i* pt1, vec2i* pt2, Queue* q)
+void gfx_line_bres(vec2i_t* pt1, vec2i_t* pt2, Queue* q)
 {
 	int x1 = pt1->x;
 	int y1 = pt1->y;
@@ -133,7 +133,7 @@ void gfx_line_bres(vec2i* pt1, vec2i* pt2, Queue* q)
 	int dy = y2 - y1;
 	int err = 0;
 	int y = y1, x = x1;
-	vec2i pt;
+	vec2i_t pt;
 	unsigned int oct = gfx_findOctant(pt1, pt2);
 	switch(oct) {
 		/* octant 1 */
@@ -279,7 +279,7 @@ void gfx_line_bres(vec2i* pt1, vec2i* pt2, Queue* q)
 
 
 /* Triangle fill by line sweep: https://www.cs.princeton.edu/courses/archive/fall00/cs426/lectures/scan/sld013.htm, https://www.youtube.com/watch?v=MIW3ljGisak */ 
-void gfx_triangle_fill_sweep(vec2i* pt1, vec2i* pt2, vec2i* pt3) {
+void gfx_triangle_fill_sweep(vec2i_t* pt1, vec2i_t* pt2, vec2i_t* pt3) {
 	float x1 = pt1->x, y1 = pt1->y;
 	float x2 = pt1->x, y2 = pt1->y;
 	float x3 = pt1->x, y3 = pt1->y;
@@ -324,7 +324,7 @@ bool is_interior(int x1, int y1, int x2, int y2, int x3, int y3, int x, int y) {
 }
 
 
-void gfx_triangle_fill_int_test(vec2i* pt1, vec2i* pt2, vec2i* pt3) {
+void gfx_triangle_fill_int_test(vec2i_t* pt1, vec2i_t* pt2, vec2i_t* pt3) {
 	// Ensure y1 <= y2 <= y3 
 	if (pt1->y > pt3->y)
 		SWAP(*pt1, *pt3);

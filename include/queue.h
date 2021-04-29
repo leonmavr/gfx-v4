@@ -5,7 +5,7 @@
 
 
 typedef struct node_t {
-	vec2i pt;
+	vec2i_t pt;
     struct node_t* next;
 } PointNode;
 
@@ -14,11 +14,11 @@ typedef struct queue_t {
 	PointNode* tail;
 } Queue;
 
-unsigned int queue_append(Queue* queue, vec2i pt);
+unsigned int queue_append(Queue* queue, vec2i_t pt);
 unsigned int queue_del(Queue* queue);
 void queue_init(Queue* queue);
 unsigned int queue_isEmpty(Queue* queue);
-vec2i queue_pop(Queue* queue);
+vec2i_t queue_pop(Queue* queue);
 unsigned int queue_print(Queue* queue);
 
 #endif /* QUEUE_H */
