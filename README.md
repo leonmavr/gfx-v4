@@ -11,7 +11,7 @@ The library has been modified to implement
 
 A Makefile was added as well.
 
-For the future I'm planning to
+In the future I'm planning to
 * interpolate the colour of each triangle pixel from its vertices
 * implement Bresenham's circle drawing algorithm
 
