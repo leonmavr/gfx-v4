@@ -28,6 +28,8 @@ Version 2, 9/23/2011 - Fixes a bug that could result in jerky animation.
 #define SWAP(X,Y)  do{ __typeof__ (X) _T = X; X = Y; Y = _T; }while(0)
 #define MIN(a,b) (((a)<(b))?(a):(b))
 #define MAX(a,b) (((a)>(b))?(a):(b))
+#define PERP_DOT(a, b, c, d) (a*d - c*b)
+
 
 /*
    gfx_open creates several X11 objects, and stores them in globals
@@ -131,7 +133,7 @@ void gfx_line_bres(vec2i* pt1, vec2i* pt2, Queue* q)
 	int dy = y2 - y1;
 	int err = 0;
 	int y = y1, x = x1;
-	Point pt;
+	vec2i pt;
 	unsigned int oct = gfx_findOctant(pt1, pt2);
 	switch(oct) {
 		/* octant 1 */
@@ -277,7 +279,10 @@ void gfx_line_bres(vec2i* pt1, vec2i* pt2, Queue* q)
 
 
 /* Triangle fill by line sweep: https://www.cs.princeton.edu/courses/archive/fall00/cs426/lectures/scan/sld013.htm, https://www.youtube.com/watch?v=MIW3ljGisak */ 
-void gfx_triangle_fill_sweep(int x1, int y1, int x2, int y2, int x3, int y3) {
+void gfx_triangle_fill_sweep(vec2i* pt1, vec2i* pt2, vec2i* pt3) {
+	float x1 = pt1->x, y1 = pt1->y;
+	float x2 = pt1->x, y2 = pt1->y;
+	float x3 = pt1->x, y3 = pt1->y;
 	float slopeInv13 = (float) (x3 - x1)/(y3 - y1);
 	float slopeInv12 = (float) (x2 - x1)/(y2 - y1);
 	float slopeInv23 = (float) (x3 - x2)/(y3 - y2);
@@ -323,20 +328,17 @@ bool is_interior(int x1, int y1, int x2, int y2, int x3, int y3, int x, int y) {
 }
 
 
-void gfx_triangle_fill_int_test(int x1, int y1, int x2, int y2, int x3, int y3) {
+void gfx_triangle_fill_int_test(vec2i* pt1, vec2i* pt2, vec2i* pt3) {
 	// Ensure y1 <= y2 <= y3 
-	if (y1 > y3){
-		SWAP(y1, y3);
-		SWAP(x1, x3);
-	}
-	if (y1 > y2){
-		SWAP(y1, y2);
-		SWAP(x1, x2);
-	}
-	if (y2 > y3){
-		SWAP(y2, y3);
-		SWAP(x2, x3);
-	}	
+	if (pt1->y > pt3->y)
+		SWAP(*pt1, *pt3);
+	if (pt1->y > pt2->y)
+		SWAP(*pt1, *pt2);
+	if (pt2->y > pt3->y)
+		SWAP(*pt2, *pt3);
+	// scan the bounding box of the triangle
+	int x1 = pt1->x, x2 = pt2->x, x3 = pt3->x;
+	int y1 = pt1->y, y2 = pt2->y, y3 = pt3->y;
 	int xmin = MIN(MIN(x1, x2), x3);
 	int xmax = MAX(MAX(x1, x2), x3);
 	for (int y = y1; y < y3; ++y) {

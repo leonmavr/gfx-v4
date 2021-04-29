@@ -35,7 +35,7 @@ unsigned int queue_isEmpty(Queue* queue) {
  *
  * @return A positive integer if error, else 0
  */
-unsigned int queue_append(Queue* queue, Point pt) {
+unsigned int queue_append(Queue* queue, vec2i pt) {
 	if (queue->head == NULL) {
 		// add node to empty list
 		PointNode* next = malloc(sizeof(PointNode));
@@ -88,10 +88,10 @@ unsigned int queue_print(Queue* queue) {
  *
  * @return A valid point (x, y, 1) if queue non empty, else invalid point, i.e. (x, y, 0)
  */
-Point queue_pop(Queue* queue) {
+vec2i queue_pop(Queue* queue) {
 	// if head next not null
 	PointNode* tmp = queue->head;
-	Point ret;
+	vec2i ret;
 	if (tmp != NULL) {
 		// get current point
 		ret = queue->head->pt;
@@ -102,7 +102,6 @@ Point queue_pop(Queue* queue) {
 		// empty list - then return invalid point
 		ret.x = 0;
 		ret.y = 0;
-		ret.valid = 0;
 	}
 	return ret;
 }
