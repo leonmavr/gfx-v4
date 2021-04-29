@@ -122,7 +122,7 @@ static unsigned int gfx_findOctant(vec2i_t* pt1, vec2i_t* pt2) {
 
 
 /* Draw a line from (x1,y1) to (x2,y2) using Bresenham's */
-void gfx_line_bres(vec2i_t* pt1, vec2i_t* pt2, Queue* q)
+void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 {
 	int x1 = pt1->x;
 	int y1 = pt1->y;
