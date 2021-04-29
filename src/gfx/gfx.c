@@ -304,11 +304,7 @@ void gfx_triangle_fill_sweep(vec2i* pt1, vec2i* pt2, vec2i* pt3) {
 }
 
 
-static inline int perp_dotprod(int x1, int y1, int x2, int y2) {
-	return x1*y2 - y1*x2;
-}
-
-
+/* Testing whether a point (x, y) is inside a triangle (pt1, pt2, pt3) */
 bool is_interior(int x1, int y1, int x2, int y2, int x3, int y3, int x, int y) {
 	int pp1_x = x1 - x;
 	int pp1_y = y1 - y;
@@ -318,13 +314,13 @@ bool is_interior(int x1, int y1, int x2, int y2, int x3, int y3, int x, int y) {
 	int pp3_y = y3 - y;
 	return 
 	// cw case
-	( ((perp_dotprod(pp1_x, pp1_y, pp2_x, pp2_y) < 0) &&
-	(perp_dotprod(pp2_x, pp2_y, pp3_x, pp3_y) < 0) &&
-	(perp_dotprod(pp3_x, pp3_y, pp1_x, pp1_y) < 0))  ||
+	( ((PERP_DOT(pp1_x, pp1_y, pp2_x, pp2_y) < 0) &&
+	(PERP_DOT(pp2_x, pp2_y, pp3_x, pp3_y) < 0) &&
+	(PERP_DOT(pp3_x, pp3_y, pp1_x, pp1_y) < 0))  ||
 	// ccw case
-	((perp_dotprod(pp1_x, pp1_y, pp2_x, pp2_y) > 0) &&
-	(perp_dotprod(pp2_x, pp2_y, pp3_x, pp3_y) > 0) &&
-	(perp_dotprod(pp3_x, pp3_y, pp1_x, pp1_y) > 0)) );
+	((PERP_DOT(pp1_x, pp1_y, pp2_x, pp2_y) > 0) &&
+	(PERP_DOT(pp2_x, pp2_y, pp3_x, pp3_y) > 0) &&
+	(PERP_DOT(pp3_x, pp3_y, pp1_x, pp1_y) > 0)) );
 }
 
 
