@@ -4,8 +4,17 @@
 A simple 2D graphics library in C for educational purposes. Originally written by [Prof Douglas Thain](https://www3.nd.edu/~dthain/courses/cse20211/fall2013/gfx/).  
 
 
-The library has been modified by adding an implementation of Bresenham's line drawing algorithm, a linear time triangle rasterisation
-based on the latter algorithm, rotations/translations to be able to animate the drawn shapes, as well as adding a Makefile.
+The library has been modified to implement
+* Bresenham's line drawing algorithm
+* a couple of triangle fills
+* translations and rotations
+
+A Makefile was added as well.
+
+For the future I'm planning to implement
+* interpolate the colour of each triangle pixel from its vertices
+* Bresenham's circle drawing algorithm
+
 
 ## Folder structure
 Source code is found in src directory. The animation played when the project is compiled and run is found in `example.c`.
