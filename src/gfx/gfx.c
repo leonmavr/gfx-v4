@@ -93,7 +93,7 @@ void gfx_point( int x, int y )
 }
 
 
-static unsigned int gfx_findOctant(vec2i_t* pt1, vec2i_t* pt2) {
+static unsigned int gfx_findOctant(const vec2i_t* pt1, const vec2i_t* pt2) {
 	int x1 = pt1->x;
 	int y1 = pt1->y;
 	int x2 = pt2->x;
@@ -342,6 +342,33 @@ void gfx_triangle_fill_int_test(vec2i_t* pt1, vec2i_t* pt2, vec2i_t* pt3) {
 			if (is_interior(x1, y1, x2, y2, x3, y3, x, y)) { gfx_point(x, y); }
 		}
 	}
+}
+
+
+/**
+ * @brief Draw a circle using midpoint algorithm
+ *
+ * @param x0 x-ordinate of centre
+ * @param y0 y-ordinate of centre
+ * @param r radius
+ */
+void gfx_circle(int x0, int y0, int r) {
+	int x = 0;
+	int y = r;
+	int dec = 1 - r;
+	do {
+		gfx_point(x + x0, y + y0);		// octant 2
+		gfx_point(y + x0, x + y0);		// 1
+		gfx_point(-x + x0, y + y0);		// 3
+		gfx_point(-y + x0, x + y0);		// 4
+		gfx_point(-y + x0, -x + y0);	// 5
+		gfx_point(-x + x0, -y + y0);	// 6
+		gfx_point(x + x0, -y + y0);		// 7
+		gfx_point(y + x0, -x + y0);		// 8
+		dec += 2*x + 3;
+		if (dec >= 0)
+			dec += - 2*(--y) + 2;
+	} while (++x < y);
 }
 
 

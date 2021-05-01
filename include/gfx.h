@@ -37,6 +37,9 @@ void gfx_triangle_fill_sweep(vec2i_t* pt1, vec2i_t* pt2, vec2i_t* pt3);
 /* Fill triangle with interior test */
 void gfx_triangle_fill_int_test(vec2i_t* pt1, vec2i_t* pt2, vec2i_t* pt3);
 
+/* Draw a circle of radius r at (x0, y0) */
+void gfx_circle(int x0, int y0, int r);
+
 /* Change the current drawing color. */
 void gfx_color( int red, int green, int blue );
 
