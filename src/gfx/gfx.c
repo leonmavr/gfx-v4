@@ -346,7 +346,8 @@ void gfx_triangle_fill_int_test(vec2i_t* pt1, vec2i_t* pt2, vec2i_t* pt3) {
 
 
 /**
- * @brief Draw a circle using midpoint algorithm
+ * @brief	Draw a circle using midpoint algorithm
+ * 			Explanation: https://github.com/0xLeo/journal/blob/master/graphics/shape_raster/pdf/shape_raster.pdf	
  *
  * @param x0 x-ordinate of centre
  * @param y0 y-ordinate of centre
