@@ -93,6 +93,7 @@ void gfx_point( int x, int y )
 }
 
 
+/* Find which octant a line belongs in */
 static unsigned int gfx_findOctant(const vec2i_t* pt1, const vec2i_t* pt2) {
 	int x1 = pt1->x;
 	int y1 = pt1->y;
@@ -324,6 +325,13 @@ bool is_interior(int x1, int y1, int x2, int y2, int x3, int y3, int x, int y) {
 }
 
 
+/**
+ * @brief Fills a triangle given 3 points
+ *
+ * @param pt1 Vertex 1
+ * @param pt2 Vertex 2
+ * @param pt3 Vertex 3
+ */
 void gfx_triangle_fill_int_test(vec2i_t* pt1, vec2i_t* pt2, vec2i_t* pt3) {
 	// Ensure y1 <= y2 <= y3 
 	if (pt1->y > pt3->y)
@@ -346,11 +354,11 @@ void gfx_triangle_fill_int_test(vec2i_t* pt1, vec2i_t* pt2, vec2i_t* pt3) {
 
 
 /**
- * @brief	Draw a circle using midpoint algorithm
+ * @brief	Draws a circle using midpoint algorithm
  * 			Explanation: https://github.com/0xLeo/journal/blob/master/graphics/shape_raster/pdf/shape_raster.pdf	
  *
- * @param x0 x-ordinate of centre
- * @param y0 y-ordinate of centre
+ * @param x0 x-coordinate of centre
+ * @param y0 y-coordinate of centre
  * @param r radius
  */
 void gfx_circle(int x0, int y0, int r) {
