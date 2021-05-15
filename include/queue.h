@@ -20,5 +20,6 @@ void queue_init(Queue* queue);
 unsigned int queue_isEmpty(Queue* queue);
 vec2i_t queue_pop(Queue* queue);
 unsigned int queue_print(Queue* queue);
+unsigned int queue_length(Queue* queue);
 
 #endif /* QUEUE_H */

@@ -127,3 +127,15 @@ unsigned int queue_del(Queue* queue) {
 	} 
 	return NO_ERROR;
 }
+
+
+/* Count nodes in queue */
+unsigned int queue_length(Queue* queue) {
+	unsigned length = 0;
+	PointNode* curr = queue->head;
+	while (curr != NULL) {
+		length++;
+		curr = curr->next;
+	}
+	return length;
+}
