@@ -279,6 +279,65 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 }
 
 
+void gfx_triangle_fill_bres(vec2i_t* pt1, vec2i_t* pt2, vec2i_t* pt3,
+		Queue* q12, Queue* q13, Queue* q23,
+		vec3u_t* col1, vec3u_t* col2, vec3u_t* col3) {
+	// Ensure y1 <= y2 <= y3 
+	if (pt1->y > pt3->y)
+		SWAP(*pt1, *pt3);
+	if (pt1->y > pt2->y)
+		SWAP(*pt1, *pt2);
+	if (pt2->y > pt3->y)
+		SWAP(*pt2, *pt3);
+	// edge pixel counters
+	unsigned i12 = 0, i13 = 0, i23 = 0;
+	// number of pixels along each edge
+	unsigned n12, n13, n23;
+	// colours along each edge
+	vec3u_t c12, c13, c23;
+	gfx_line_bres(pt1, pt2, q12);
+	gfx_line_bres(pt1, pt3, q13);
+	gfx_line_bres(pt2, pt3, q23);
+	n12 = queue_length(q12);
+	n13 = queue_length(q13);
+	n23 = queue_length(q23);
+	// for each pixel in q12, find its interpolated colour and do putPixel
+	PointNode* curr;
+	curr = q12->head;
+	for (i12 = 0; i12 < n12; ++i12) {
+		c12.x = (float)(n12 - i12 - 1)/n12*col1->x + (float)(i12 -1)/n12*col2->x;
+		c12.y = (float)(n12 - i12 - 1)/n12*col1->y + (float)(i12 -1)/n12*col2->y;
+		c12.z = (float)(n12 - i12 - 1)/n12*col1->z + (float)(i12 -1)/n12*col2->z;
+		//printf("%d, %d\n", curr->pt.x, curr->pt.y);
+		
+		gfx_color(c12.x, c12.y, c12.z);
+		gfx_point(curr->pt.x, curr->pt.y);
+		gfx_flush();
+		curr = curr->next;
+	}
+	curr = q13->head;
+	for (i13 = 0; i13 < n13; ++i13) {
+		c13.x = (float)(n13 - i13 - 1)/n13*col1->x + (float)(i13 -1)/n13*col3->x;
+		c13.y = (float)(n13 - i13 - 1)/n13*col1->y + (float)(i13 -1)/n13*col3->y;
+		c13.z = (float)(n13 - i13 - 1)/n13*col1->z + (float)(i13 -1)/n13*col3->z;
+		gfx_color(c13.x, c13.y, c13.z);
+		gfx_point(curr->pt.x, curr->pt.y);
+		gfx_flush();
+		curr = curr->next;
+	}
+	curr = q23->head;
+	for (i23 = 0; i23 < n23; ++i23) {
+		c23.x = (float)(n23 - i23 - 1)/n23*col2->x + (float)(i23 -1)/n23*col3->x;
+		c23.y = (float)(n23 - i23 - 1)/n23*col2->y + (float)(i23 -1)/n23*col3->y;
+		c23.z = (float)(n23 - i23 - 1)/n23*col2->z + (float)(i23 -1)/n23*col3->z;
+		gfx_color(c23.x, c23.y, c23.z);
+		gfx_point(curr->pt.x, curr->pt.y);
+		gfx_flush();
+		curr = curr->next;
+	}
+}
+
+
 /* Triangle fill by line sweep: https://www.cs.princeton.edu/courses/archive/fall00/cs426/lectures/scan/sld013.htm, https://www.youtube.com/watch?v=MIW3ljGisak */ 
 void gfx_triangle_fill_sweep(vec2i_t* pt1, vec2i_t* pt2, vec2i_t* pt3) {
 	float x1 = pt1->x, y1 = pt1->y;

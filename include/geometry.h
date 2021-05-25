@@ -8,6 +8,13 @@ typedef struct vec2i_t {
 } vec2i_t;
 
 
+typedef struct vec3u_t {
+	int x;
+	int y;
+	int z;
+} vec3u_t;
+
+
 void geo_point_print(vec2i_t pt);
 void geo_rotate(vec2i_t* pt, float deg);
 void geo_shift(vec2i_t* pt, int x, int y);

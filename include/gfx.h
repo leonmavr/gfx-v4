@@ -32,6 +32,10 @@ void gfx_naive_line(int x1, int y1, int x2, int y2);
 /* Draw line using Bresenham's */
 void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q);
 
+/*Triangle fill with Bresenham's and colour smearing */
+void gfx_triangle_fill_bres(vec2i_t* pt1, vec2i_t* pt2, vec2i_t* pt3,
+		Queue* q1, Queue* q2, Queue* q3,
+		vec3u_t* col1, vec3u_t* col2, vec3u_t* col3);
 /* Fill triangle with line sweep */
 void gfx_triangle_fill_sweep(vec2i_t* pt1, vec2i_t* pt2, vec2i_t* pt3);
 /* Fill triangle with interior test */
