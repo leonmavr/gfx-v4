@@ -6,17 +6,20 @@ LFLAGS = -lX11 -lm
 
 all: example
 
-example: queue.o gfx.o example.o geometry.o
-	$(CC) queue.o gfx.o example.o geometry.o -o example $(LFLAGS) 
+example: queue.o gfx.o example.o geometry.o algos.o
+	$(CC) queue.o gfx.o example.o geometry.o algos.o -o example $(LFLAGS) 
 
-queue.o: $(SRCDIR)/queue/queue.c
-	$(CC) $(CFLAGS) $(SRCDIR)/queue/queue.c
+queue.o: $(SRCDIR)/queue.c
+	$(CC) $(CFLAGS) $(SRCDIR)/queue.c
 
-gfx.o: $(SRCDIR)/gfx/gfx.c
-	$(CC) $(CFLAGS) $(SRCDIR)/gfx/gfx.c
+gfx.o: $(SRCDIR)/gfx.c
+	$(CC) $(CFLAGS) $(SRCDIR)/gfx.c
 
-geometry.o: $(SRCDIR)/geometry/geometry.c
-	$(CC) $(CFLAGS) $(SRCDIR)/geometry/geometry.c
+geometry.o: $(SRCDIR)/geometry.c
+	$(CC) $(CFLAGS) $(SRCDIR)/geometry.c
+
+geometry.o: $(SRCDIR)/algos.c
+	$(CC) $(CFLAGS) $(SRCDIR)/algos.c
 
 example.o: example.c
 	$(CC) $(CFLAGS) example.c

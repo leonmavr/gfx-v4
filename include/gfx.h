@@ -33,20 +33,10 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q);
 
 /* Draw a colour gradient line using Bresenham's */
 void gfx_line_bres_col(Pixel* pt1, Pixel* pt2, Queue* q);
-#if 0
-void gfx_line_bres_col(const vec2i_t* pt1, const vec2i_t* pt2,
-		const vec3u_t* col1, const vec3u_t* col2,
-		Queue* q);
-#endif
 
-/*Triangle fill with Bresenham's and colour smearing */
-#if 0
-void gfx_triangle_fill_bres(vec2i_t* pt1, vec2i_t* pt2, vec2i_t* pt3,
-		Queue* q1, Queue* q2, Queue* q3,
-		vec3u_t* col1, vec3u_t* col2, vec3u_t* col3);
-#endif
+/* Triangle fill with Bresenham with colour interpolated from vertices */
 void gfx_triangle_fill_bres(Pixel* pt1, Pixel* pt2, Pixel* pt3,
-		Queue* q12, Queue* q13, Queue* q23);
+							Queue* q12, Queue* q13, Queue* q23);
 /* Fill triangle with line sweep */
 void gfx_triangle_fill_sweep(vec2i_t* pt1, vec2i_t* pt2, vec2i_t* pt3);
 /* Fill triangle with interior test */
