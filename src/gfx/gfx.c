@@ -31,6 +31,20 @@ Version 2, 9/23/2011 - Fixes a bug that could result in jerky animation.
 #define PERP_DOT(a, b, c, d) (a*d - c*b)
 
 
+void vec3u_add(vec3u_t* result, vec3u_t* vec1, vec3u_t* vec2) {
+	result->x = vec1->x + vec2->x;	
+	result->y = vec1->y + vec2->y;	
+	result->z = vec1->z + vec2->z;	
+}
+
+
+void vec3u_mul_float(vec3u_t* result, vec3u_t* vec1, float fl) {
+	result->x = fl * vec1->x;
+	result->y = fl * vec1->y;
+	result->z = fl * vec1->z;
+}
+
+
 /*
    gfx_open creates several X11 objects, and stores them in globals
    for use by the other functions in the library.
@@ -134,7 +148,7 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 	int dy = y2 - y1;
 	int err = 0;
 	int y = y1, x = x1;
-	vec2i_t pt;
+	PointNode pt;
 	unsigned int oct = gfx_findOctant(pt1, pt2);
 	switch(oct) {
 		/* octant 1 */
@@ -142,9 +156,9 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 			y = y1;
 			for (x = x1; x < x2; x++) {
 				gfx_point(x, y);
-				pt.x = x;
-				pt.y = y;
-				queue_append(q, pt);
+				pt.pt.x = x;
+				pt.pt.y = y;
+				queue_append(q, &pt);
 				err += dy;
 				if (2*err >= dx){
 					err -= dx;
@@ -157,9 +171,9 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 			x = x1;
 			for (y = y1; y < y2; y++) {
 				gfx_point(x, y);
-				pt.x = x;
-				pt.y = y;
-				queue_append(q, pt);
+				pt.pt.x = x;
+				pt.pt.y = y;
+				queue_append(q, &pt);
 				err += dx;
 				if (2*err >= dy){
 					err -= dy;
@@ -172,9 +186,9 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 			x = x1;
 			for (y = y1; y < y2; y++) {
 				gfx_point(x, y);
-				pt.x = x;
-				pt.y = y;
-				queue_append(q, pt);
+				pt.pt.x = x;
+				pt.pt.y = y;
+				queue_append(q, &pt);
 				err -= dx;
 				if (2*err >= dy){
 					err -= dy;
@@ -187,9 +201,9 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 			y = y1;
 			for (x = x1; x > x2; x--) {
 				gfx_point(x, y);
-				pt.x = x;
-				pt.y = y;
-				queue_append(q, pt);
+				pt.pt.x = x;
+				pt.pt.y = y;
+				queue_append(q, &pt);
 				err += dy;
 				if (2*err >= -dx){
 					err += dx;
@@ -202,9 +216,9 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 			y = y1;
 			for (x = x1; x > x2; x--) {
 				gfx_point(x, y);
-				pt.x = x;
-				pt.y = y;
-				queue_append(q, pt);
+				pt.pt.x = x;
+				pt.pt.y = y;
+				queue_append(q, &pt);
 				err -= dy;
 				if (2*err >= -dx){
 					err += dx;
@@ -217,9 +231,9 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 			x = x1;
 			for (y = y1; y > y2; y--) {
 				gfx_point(x, y);
-				pt.x = x;
-				pt.y = y;
-				queue_append(q, pt);
+				pt.pt.x = x;
+				pt.pt.y = y;
+				queue_append(q, &pt);
 				err -= dx;
 				if (2*err >= -dy){
 					err -= dy;
@@ -232,9 +246,9 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 			x = x1;
 			for (y = y1; y > y2; y--) {
 				gfx_point(x, y);
-				pt.x = x;
-				pt.y = y;
-				queue_append(q, pt);
+				pt.pt.x = x;
+				pt.pt.y = y;
+				queue_append(q, &pt);
 				err += dx;
 				if (2*err >= -dy){
 					err += dy;
@@ -247,9 +261,9 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 			y = y1;
 			for (x = x1; x < x2; x++) {
 				gfx_point(x, y);
-				pt.x = x;
-				pt.y = y;
-				queue_append(q, pt);
+				pt.pt.x = x;
+				pt.pt.y = y;
+				queue_append(q, &pt);
 				err -= dy;
 				if (2*err >= dx){
 					err -= dx;
@@ -262,81 +276,151 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 			if (y1 < y2){
 				for (y = y1; y < y2; y++) {
 					gfx_point(x, y);	
-					pt.x = x;
-					pt.y = y;
-					queue_append(q, pt);
+					pt.pt.x = x;
+					pt.pt.y = y;
+					queue_append(q, &pt);
 				}
 			} else {
 				for (y = y2; y < y1; y++) {
 					gfx_point(x, y);	
-					pt.x = x;
-					pt.y = y;
-					queue_append(q, pt);
+					pt.pt.x = x;
+					pt.pt.y = y;
+					queue_append(q, &pt);
 				}
 			}
 			break;
 	}
 }
 
+#if 0
+void gfx_line_bres_col(const vec2i_t* pt1, const vec2i_t* pt2,
+		const vec3u_t* col1, const vec3u_t* col2,
+		Queue* q) {
+	gfx_line_bres(pt1, pt2, q);
+	int len = queue_length(q);
+	vec3u_t col1_curr = *col1;
+	vec3u_t col2_curr = *col2;
+	vec3u_t col_curr;
+	PointNode* curr = q->head;
 
-void gfx_triangle_fill_bres(vec2i_t* pt1, vec2i_t* pt2, vec2i_t* pt3,
-		Queue* q12, Queue* q13, Queue* q23,
-		vec3u_t* col1, vec3u_t* col2, vec3u_t* col3) {
-	// Ensure y1 <= y2 <= y3 
-	if (pt1->y > pt3->y)
-		SWAP(*pt1, *pt3);
-	if (pt1->y > pt2->y)
-		SWAP(*pt1, *pt2);
-	if (pt2->y > pt3->y)
-		SWAP(*pt2, *pt3);
-	// edge pixel counters
-	unsigned i12 = 0, i13 = 0, i23 = 0;
-	// number of pixels along each edge
-	unsigned n12, n13, n23;
-	// colours along each edge
-	vec3u_t c12, c13, c23;
-	gfx_line_bres(pt1, pt2, q12);
-	gfx_line_bres(pt1, pt3, q13);
-	gfx_line_bres(pt2, pt3, q23);
-	n12 = queue_length(q12);
-	n13 = queue_length(q13);
-	n23 = queue_length(q23);
-	// for each pixel in q12, find its interpolated colour and do putPixel
-	PointNode* curr;
-	curr = q12->head;
-	for (i12 = 0; i12 < n12; ++i12) {
-		c12.x = (float)(n12 - i12 - 1)/n12*col1->x + (float)(i12 -1)/n12*col2->x;
-		c12.y = (float)(n12 - i12 - 1)/n12*col1->y + (float)(i12 -1)/n12*col2->y;
-		c12.z = (float)(n12 - i12 - 1)/n12*col1->z + (float)(i12 -1)/n12*col2->z;
-		//printf("%d, %d\n", curr->pt.x, curr->pt.y);
-		
-		gfx_color(c12.x, c12.y, c12.z);
+	for (int i = 0; i < len; ++i) {
+		//c12.x = (float)(n12 - i12 - 1)/n12*col1->x + (float)(i12 -1)/n12*col2->x;
+		vec3u_mul_float(&col1_curr, col1,  (float)(len-i-1)/len);
+		vec3u_mul_float(&col2_curr, col2,  (float)(i -1)/len);
+		vec3u_add(&col_curr, &col1_curr, &col2_curr);
+		// draw using the resulting colour
+		gfx_color(col_curr.x, col_curr.y, col_curr.z);
 		gfx_point(curr->pt.x, curr->pt.y);
 		gfx_flush();
 		curr = curr->next;
 	}
-	curr = q13->head;
-	for (i13 = 0; i13 < n13; ++i13) {
-		c13.x = (float)(n13 - i13 - 1)/n13*col1->x + (float)(i13 -1)/n13*col3->x;
-		c13.y = (float)(n13 - i13 - 1)/n13*col1->y + (float)(i13 -1)/n13*col3->y;
-		c13.z = (float)(n13 - i13 - 1)/n13*col1->z + (float)(i13 -1)/n13*col3->z;
-		gfx_color(c13.x, c13.y, c13.z);
-		gfx_point(curr->pt.x, curr->pt.y);
-		gfx_flush();
-		curr = curr->next;
-	}
-	curr = q23->head;
-	for (i23 = 0; i23 < n23; ++i23) {
-		c23.x = (float)(n23 - i23 - 1)/n23*col2->x + (float)(i23 -1)/n23*col3->x;
-		c23.y = (float)(n23 - i23 - 1)/n23*col2->y + (float)(i23 -1)/n23*col3->y;
-		c23.z = (float)(n23 - i23 - 1)/n23*col2->z + (float)(i23 -1)/n23*col3->z;
-		gfx_color(c23.x, c23.y, c23.z);
+}
+#endif
+
+void gfx_line_bres_col(PointNode* pt1, PointNode* pt2, Queue* q) {
+	gfx_line_bres(&pt1->pt, &pt2->pt, q);
+	int len = queue_length(q);
+	vec3u_t col1 = pt1->colour;
+	vec3u_t col2 = pt2->colour;
+	vec3u_t col1_curr = col1;
+	vec3u_t col2_curr = col2;
+	vec3u_t col_curr;
+	PointNode* curr = q->head;
+
+	for (int i = 0; i < len; ++i) {
+		//c12.x = (float)(n12 - i12 - 1)/n12*col1->x + (float)(i12 -1)/n12*col2->x;
+		vec3u_mul_float(&col1_curr, &col1,  (float)(len-i-1)/len);
+		vec3u_mul_float(&col2_curr, &col2,  (float)(i -1)/len);
+		vec3u_add(&col_curr, &col1_curr, &col2_curr);
+		// draw using the resulting colour
+		gfx_color(col_curr.x, col_curr.y, col_curr.z);
+		curr->colour.x = col_curr.x;
+		curr->colour.y = col_curr.y;
+		curr->colour.z = col_curr.z;
 		gfx_point(curr->pt.x, curr->pt.y);
 		gfx_flush();
 		curr = curr->next;
 	}
 }
 
+
+void gfx_triangle_fill_bres(PointNode* pt1, PointNode* pt2, PointNode* pt3,
+		Queue* q12, Queue* q13, Queue* q23) {
+	// Assume y1 <= y2 <= y3 !!!
+	assert((pt1->pt.y <= pt2->pt.y) && (pt2->pt.y <= pt3->pt.y));
+
+	gfx_line_bres_col(pt1, pt2, q12);
+	gfx_line_bres_col(pt1, pt3, q13);
+	gfx_line_bres_col(pt2, pt3, q23);
+
+	// for each pixel in q12, find its interpolated colour and do putPixel
+	PointNode* curr12 = q12->head;
+	PointNode* curr13 = q13->head;
+	PointNode* curr23 = q23->head;
+
+	Queue* q = malloc(sizeof(Queue));
+	//Queue* q23 = malloc(sizeof(Queue));
+	//zcurr12 = curr12->next;
+	while (curr12 != NULL) {
+		// top flat triangle
+		// update edge 12
+		if (curr12 != NULL) {
+			// skip pixels that are on the same y
+			while (curr12->next != NULL) {
+				if (curr12->next->pt.y == curr12->pt.y)
+					curr12 = curr12->next;
+				else
+					break;
+			}
+			curr12 = curr12->next;
+		} 
+		// update edge 13
+		if (curr13 != NULL) {
+			// skip pixels that are on the same y
+			while (curr13->next != NULL) {
+				if (curr13->next->pt.y == curr13->pt.y)
+					curr13 = curr13->next;
+				else
+					break;
+			}
+			curr13 = curr13->next;
+		}
+
+		if (curr12 != NULL) {
+			gfx_line_bres_col(curr12, curr13, q);
+			queue_del(q);
+		}
+	}
+	while ((curr23 != NULL) && (curr13 != NULL)) {
+		// top flat triangle
+		// update edge 23
+		if (curr23 != NULL) {
+			// skip pixels that are on the same y
+			while (curr23->next != NULL) {
+				if (curr23->next->pt.y == curr23->pt.y)
+					curr23 = curr23->next;
+				else
+					break;
+			}
+			curr23 = curr23->next;
+		}
+		// update edge 13
+		if (curr13 != NULL) {
+			// skip pixels that are on the same y
+			while (curr13->next != NULL) {
+				if (curr13->next->pt.y == curr13->pt.y)
+					curr13 = curr13->next;
+				else
+					break;
+			}
+			curr13 = curr13->next;
+		}
+		if ((curr23 != NULL) && (curr13 != NULL)) {
+			gfx_line_bres_col(curr23, curr13, q);
+			queue_del(q);
+		}
+	}
+}
 
 /* Triangle fill by line sweep: https://www.cs.princeton.edu/courses/archive/fall00/cs426/lectures/scan/sld013.htm, https://www.youtube.com/watch?v=MIW3ljGisak */ 
 void gfx_triangle_fill_sweep(vec2i_t* pt1, vec2i_t* pt2, vec2i_t* pt3) {

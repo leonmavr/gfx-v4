@@ -16,6 +16,9 @@ Version 4, 10/16/2020 - Add line drawing by Bresenham and triangle fill function
 
 #include "queue.h" 
 
+/* vector operations */
+void vec3u_add(vec3u_t* result, vec3u_t* vec1, vec3u_t* vec2);
+void vec3u_mul_float(vec3u_t* result, vec3u_t* vec1, float fl);
 
 /* Open a new graphics window. */
 void gfx_open( int width, int height, const char *title );
@@ -32,10 +35,22 @@ void gfx_naive_line(int x1, int y1, int x2, int y2);
 /* Draw line using Bresenham's */
 void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q);
 
+/* Draw a colour gradient line using Bresenham's */
+void gfx_line_bres_col(PointNode* pt1, PointNode* pt2, Queue* q);
+#if 0
+void gfx_line_bres_col(const vec2i_t* pt1, const vec2i_t* pt2,
+		const vec3u_t* col1, const vec3u_t* col2,
+		Queue* q);
+#endif
+
 /*Triangle fill with Bresenham's and colour smearing */
+#if 0
 void gfx_triangle_fill_bres(vec2i_t* pt1, vec2i_t* pt2, vec2i_t* pt3,
 		Queue* q1, Queue* q2, Queue* q3,
 		vec3u_t* col1, vec3u_t* col2, vec3u_t* col3);
+#endif
+void gfx_triangle_fill_bres(PointNode* pt1, PointNode* pt2, PointNode* pt3,
+		Queue* q12, Queue* q13, Queue* q23);
 /* Fill triangle with line sweep */
 void gfx_triangle_fill_sweep(vec2i_t* pt1, vec2i_t* pt2, vec2i_t* pt3);
 /* Fill triangle with interior test */

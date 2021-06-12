@@ -11,6 +11,7 @@ by Prof. Thain
 #include "geometry.h" 
 #include <unistd.h> 
 
+
 int main()
 {
 	int ysize = 320;
@@ -26,12 +27,34 @@ int main()
 
 	// Draw triangles and animate 
 	Queue* q = malloc(sizeof(Queue));
+	Queue* q12 = malloc(sizeof(Queue));
+	Queue* q13 = malloc(sizeof(Queue));
+	Queue* q23 = malloc(sizeof(Queue));
 	queue_init(q);
+	queue_init(q12);
+	queue_init(q13);
+	queue_init(q23);
 	gfx_color(50,200,0);
-	vec2i_t tr11 = {190, 200}, tr12 = {200, 160}, tr13 = {210,200};
-	vec2i_t tr21 = {180, 200}, tr22 = {200, 140}, tr23 = {220, 200};
-	vec2i_t tr31 = {165, 200}, tr32 = {200, 100}, tr33 = {235, 200};
 
+	//vec2i_t pt1 = {10, 20}, pt2 = {250, 20};
+	PointNode pt1 = {{70, 20}, {255, 0, 0}};
+	PointNode pt2 = {{10, 80}, {0, 255, 0}};
+	PointNode pt3 = {{230, 220}, {0, 0, 255}};
+	gfx_line_bres_col(&pt1, &pt2, q);
+	//gfx_line_bres(&tr11, &tr22, q);
+	gfx_triangle_fill_bres(&pt1, &pt2, &pt3, q12, q13, q23);
+
+	//printf("----len = %d\n", queue_length(q));
+	//queue_print(q);
+	gfx_flush();
+	sleep(30);
+	gfx_clear();
+
+	queue_del(q12);
+	queue_del(q13);
+	queue_del(q23);
+	queue_del(q);
+#if 0
 	int i;
 	float deg_step = -10.0;
 
@@ -54,6 +77,6 @@ int main()
 	//char c = gfx_wait();
 	// Quit if it is the letter q.
 	//if (c=='q') break;
-
+#endif
 	return 0;
 }

@@ -35,14 +35,15 @@ unsigned int queue_isEmpty(Queue* queue) {
  *
  * @return A positive integer if error, else 0
  */
-unsigned int queue_append(Queue* queue, vec2i_t pt) {
+unsigned int queue_append_colour(Queue* queue, vec2i_t* pt, vec3u_t* colour) {
 	if (queue->head == NULL) {
 		// add node to empty list
 		PointNode* next = malloc(sizeof(PointNode));
 		if (next == NULL)
 			return ERROR_CANNOT_ALLOC;
 		// create next node
-		next->pt = pt;
+		next->pt = *pt;
+		next->colour = *colour;
 		next->next = NULL;
 		// initialise list with 1 node
 		queue->head = queue->tail = next; 
@@ -50,11 +51,45 @@ unsigned int queue_append(Queue* queue, vec2i_t pt) {
 		// add to tail
 		queue->tail->next = malloc(sizeof(PointNode));
 		queue->tail->next->next = NULL;
-		queue->tail->next->pt = pt;
+		queue->tail->next->pt = *pt;
+		queue->tail->next->colour = *colour;
 		queue->tail = queue->tail->next;
 	}
 	return NO_ERROR;
 }
+
+
+/**
+ * @brief Add a point at the end (tail) of the queue. 
+ *
+ * @param queue A Queue
+ * @param pt A Point structure
+ *
+ * @return A positive integer if error, else 0
+ */
+unsigned int queue_append(Queue* queue, PointNode* pt) {
+	if (queue->head == NULL) {
+		// add node to empty list
+		PointNode* next = malloc(sizeof(PointNode));
+		if (next == NULL)
+			return ERROR_CANNOT_ALLOC;
+		// create next node
+		next->pt = pt->pt;
+		next->colour = pt->colour;
+		next->next = NULL;
+		// initialise list with 1 node
+		queue->head = queue->tail = next; 
+	} else {
+		// add to tail
+		queue->tail->next = malloc(sizeof(PointNode));
+		queue->tail->next->next = NULL;
+		queue->tail->next->pt = pt->pt;
+		queue->tail->next->colour = pt->colour;
+		queue->tail = queue->tail->next;
+	}
+	return NO_ERROR;
+}
+
 
 
 /**
@@ -118,13 +153,15 @@ unsigned int queue_del(Queue* queue) {
 	// check for errors
 	if (queue_isEmpty(queue))
 		return ERROR_LIST_EMPTY;
-	PointNode* iter;
+	PointNode* curr = queue->head;
+	PointNode* next;
 	// do the work
-	while (queue->head != NULL){
-		iter = queue->head;
-		queue->head = queue->head->next;
-		free(iter);
+	while (curr != NULL){
+		next = curr->next;
+		free(curr);
+		curr = next;
 	} 
+	queue->head = NULL;
 	return NO_ERROR;
 }
 
