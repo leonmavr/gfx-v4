@@ -30,21 +30,6 @@ Version 2, 9/23/2011 - Fixes a bug that could result in jerky animation.
 #define MAX(a,b) (((a)>(b))?(a):(b))
 #define PERP_DOT(a, b, c, d) (a*d - c*b)
 
-
-void vec3u_add(vec3u_t* result, vec3u_t* vec1, vec3u_t* vec2) {
-	result->x = vec1->x + vec2->x;	
-	result->y = vec1->y + vec2->y;	
-	result->z = vec1->z + vec2->z;	
-}
-
-
-void vec3u_mul_float(vec3u_t* result, vec3u_t* vec1, float fl) {
-	result->x = fl * vec1->x;
-	result->y = fl * vec1->y;
-	result->z = fl * vec1->z;
-}
-
-
 /*
    gfx_open creates several X11 objects, and stores them in globals
    for use by the other functions in the library.
@@ -107,6 +92,20 @@ void gfx_point( int x, int y )
 }
 
 
+static inline void vec3u_add(vec3u_t* result, vec3u_t* vec1, vec3u_t* vec2) {
+	result->x = vec1->x + vec2->x;	
+	result->y = vec1->y + vec2->y;	
+	result->z = vec1->z + vec2->z;	
+}
+
+
+static inline void vec3u_mul_float(vec3u_t* result, vec3u_t* vec1, float fl) {
+	result->x = fl * vec1->x;
+	result->y = fl * vec1->y;
+	result->z = fl * vec1->z;
+}
+
+
 /* Find which octant a line belongs in */
 static unsigned int gfx_findOctant(const vec2i_t* pt1, const vec2i_t* pt2) {
 	int x1 = pt1->x;
@@ -148,7 +147,7 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 	int dy = y2 - y1;
 	int err = 0;
 	int y = y1, x = x1;
-	PointNode pt;
+	Pixel pt;
 	unsigned int oct = gfx_findOctant(pt1, pt2);
 	switch(oct) {
 		/* octant 1 */
@@ -292,32 +291,8 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 	}
 }
 
-#if 0
-void gfx_line_bres_col(const vec2i_t* pt1, const vec2i_t* pt2,
-		const vec3u_t* col1, const vec3u_t* col2,
-		Queue* q) {
-	gfx_line_bres(pt1, pt2, q);
-	int len = queue_length(q);
-	vec3u_t col1_curr = *col1;
-	vec3u_t col2_curr = *col2;
-	vec3u_t col_curr;
-	PointNode* curr = q->head;
 
-	for (int i = 0; i < len; ++i) {
-		//c12.x = (float)(n12 - i12 - 1)/n12*col1->x + (float)(i12 -1)/n12*col2->x;
-		vec3u_mul_float(&col1_curr, col1,  (float)(len-i-1)/len);
-		vec3u_mul_float(&col2_curr, col2,  (float)(i -1)/len);
-		vec3u_add(&col_curr, &col1_curr, &col2_curr);
-		// draw using the resulting colour
-		gfx_color(col_curr.x, col_curr.y, col_curr.z);
-		gfx_point(curr->pt.x, curr->pt.y);
-		gfx_flush();
-		curr = curr->next;
-	}
-}
-#endif
-
-void gfx_line_bres_col(PointNode* pt1, PointNode* pt2, Queue* q) {
+void gfx_line_bres_col(Pixel* pt1, Pixel* pt2, Queue* q) {
 	gfx_line_bres(&pt1->pt, &pt2->pt, q);
 	int len = queue_length(q);
 	vec3u_t col1 = pt1->colour;
@@ -325,7 +300,7 @@ void gfx_line_bres_col(PointNode* pt1, PointNode* pt2, Queue* q) {
 	vec3u_t col1_curr = col1;
 	vec3u_t col2_curr = col2;
 	vec3u_t col_curr;
-	PointNode* curr = q->head;
+	Pixel* curr = q->head;
 
 	for (int i = 0; i < len; ++i) {
 		//c12.x = (float)(n12 - i12 - 1)/n12*col1->x + (float)(i12 -1)/n12*col2->x;
@@ -344,7 +319,7 @@ void gfx_line_bres_col(PointNode* pt1, PointNode* pt2, Queue* q) {
 }
 
 
-void gfx_triangle_fill_bres(PointNode* pt1, PointNode* pt2, PointNode* pt3,
+void gfx_triangle_fill_bres(Pixel* pt1, Pixel* pt2, Pixel* pt3,
 		Queue* q12, Queue* q13, Queue* q23) {
 	// Assume y1 <= y2 <= y3 !!!
 	assert((pt1->pt.y <= pt2->pt.y) && (pt2->pt.y <= pt3->pt.y));
@@ -354,9 +329,9 @@ void gfx_triangle_fill_bres(PointNode* pt1, PointNode* pt2, PointNode* pt3,
 	gfx_line_bres_col(pt2, pt3, q23);
 
 	// for each pixel in q12, find its interpolated colour and do putPixel
-	PointNode* curr12 = q12->head;
-	PointNode* curr13 = q13->head;
-	PointNode* curr23 = q23->head;
+	Pixel* curr12 = q12->head;
+	Pixel* curr13 = q13->head;
+	Pixel* curr23 = q23->head;
 
 	Queue* q = malloc(sizeof(Queue));
 	//Queue* q23 = malloc(sizeof(Queue));
@@ -639,4 +614,5 @@ void gfx_flush()
 {
 	XFlush(gfx_display);
 }
+
 

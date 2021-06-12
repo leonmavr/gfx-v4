@@ -14,8 +14,8 @@ by Prof. Thain
 
 int main()
 {
-	int ysize = 320;
-	int xsize = 640;
+	int ysize = 980;
+	int xsize = 1280;
 
 	//char c;
 
@@ -37,9 +37,9 @@ int main()
 	gfx_color(50,200,0);
 
 	//vec2i_t pt1 = {10, 20}, pt2 = {250, 20};
-	PointNode pt1 = {{70, 20}, {255, 0, 0}};
-	PointNode pt2 = {{10, 80}, {0, 255, 0}};
-	PointNode pt3 = {{230, 220}, {0, 0, 255}};
+	Pixel pt1 = {{300, 20}, {255, 0, 0}};
+	Pixel pt2 = {{840, 650}, {0, 255, 0}};
+	Pixel pt3 = {{100, 800}, {0, 0, 255}};
 	gfx_line_bres_col(&pt1, &pt2, q);
 	//gfx_line_bres(&tr11, &tr22, q);
 	gfx_triangle_fill_bres(&pt1, &pt2, &pt3, q12, q13, q23);

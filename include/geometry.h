@@ -7,11 +7,12 @@ typedef struct vec2i_t {
 	int y;
 } vec2i_t;
 
+typedef unsigned char u8_t;
 
 typedef struct vec3u_t {
-	int x;
-	int y;
-	int z;
+	u8_t x;
+	u8_t y;
+	u8_t z;
 } vec3u_t;
 
 

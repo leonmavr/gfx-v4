@@ -35,42 +35,10 @@ unsigned int queue_isEmpty(Queue* queue) {
  *
  * @return A positive integer if error, else 0
  */
-unsigned int queue_append_colour(Queue* queue, vec2i_t* pt, vec3u_t* colour) {
+unsigned int queue_append(Queue* queue, Pixel* pt) {
 	if (queue->head == NULL) {
 		// add node to empty list
-		PointNode* next = malloc(sizeof(PointNode));
-		if (next == NULL)
-			return ERROR_CANNOT_ALLOC;
-		// create next node
-		next->pt = *pt;
-		next->colour = *colour;
-		next->next = NULL;
-		// initialise list with 1 node
-		queue->head = queue->tail = next; 
-	} else {
-		// add to tail
-		queue->tail->next = malloc(sizeof(PointNode));
-		queue->tail->next->next = NULL;
-		queue->tail->next->pt = *pt;
-		queue->tail->next->colour = *colour;
-		queue->tail = queue->tail->next;
-	}
-	return NO_ERROR;
-}
-
-
-/**
- * @brief Add a point at the end (tail) of the queue. 
- *
- * @param queue A Queue
- * @param pt A Point structure
- *
- * @return A positive integer if error, else 0
- */
-unsigned int queue_append(Queue* queue, PointNode* pt) {
-	if (queue->head == NULL) {
-		// add node to empty list
-		PointNode* next = malloc(sizeof(PointNode));
+		Pixel* next = malloc(sizeof(Pixel));
 		if (next == NULL)
 			return ERROR_CANNOT_ALLOC;
 		// create next node
@@ -81,7 +49,7 @@ unsigned int queue_append(Queue* queue, PointNode* pt) {
 		queue->head = queue->tail = next; 
 	} else {
 		// add to tail
-		queue->tail->next = malloc(sizeof(PointNode));
+		queue->tail->next = malloc(sizeof(Pixel));
 		queue->tail->next->next = NULL;
 		queue->tail->next->pt = pt->pt;
 		queue->tail->next->colour = pt->colour;
@@ -102,7 +70,7 @@ unsigned int queue_append(Queue* queue, PointNode* pt) {
 unsigned int queue_print(Queue* queue) {
 	if (queue_isEmpty(queue)) 
 		return ERROR_LIST_EMPTY;
-	PointNode* iter = queue->head;
+	Pixel* iter = queue->head;
 	if (iter == NULL)
 		return ERROR_CANNOT_ALLOC;
 	// do the work
@@ -125,7 +93,7 @@ unsigned int queue_print(Queue* queue) {
  */
 vec2i_t queue_pop(Queue* queue) {
 	// if head next not null
-	PointNode* tmp = queue->head;
+	Pixel* tmp = queue->head;
 	vec2i_t ret;
 	if (tmp != NULL) {
 		// get current point
@@ -153,8 +121,8 @@ unsigned int queue_del(Queue* queue) {
 	// check for errors
 	if (queue_isEmpty(queue))
 		return ERROR_LIST_EMPTY;
-	PointNode* curr = queue->head;
-	PointNode* next;
+	Pixel* curr = queue->head;
+	Pixel* next;
 	// do the work
 	while (curr != NULL){
 		next = curr->next;
@@ -169,7 +137,7 @@ unsigned int queue_del(Queue* queue) {
 /* Count nodes in queue */
 unsigned int queue_length(Queue* queue) {
 	unsigned length = 0;
-	PointNode* curr = queue->head;
+	Pixel* curr = queue->head;
 	while (curr != NULL) {
 		length++;
 		curr = curr->next;

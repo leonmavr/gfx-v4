@@ -9,16 +9,16 @@ typedef struct node_t {
 	vec2i_t pt;
 	vec3u_t colour;
     struct node_t* next;
-} PointNode;
+} Pixel;
 
 
 typedef struct queue_t {
-	PointNode* head;
-	PointNode* tail;
+	Pixel* head;
+	Pixel* tail;
 } Queue;
 
 
-unsigned int queue_append(Queue* queue, PointNode* pt);
+unsigned int queue_append(Queue* queue, Pixel* pt);
 unsigned int queue_append_colour(Queue* queue, vec2i_t* pt, vec3u_t* colour);
 unsigned int queue_del(Queue* queue);
 void queue_init(Queue* queue);
