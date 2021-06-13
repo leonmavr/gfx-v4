@@ -17,7 +17,7 @@ typedef struct vec3u8_t {
 
 // TODO: rename this to Pixel, rename pt to point
 typedef struct node_t {
-	vec2i_t pt;
+	vec2i_t point;
 	vec3u8_t colour;
     struct node_t* next;
 } Pixel;

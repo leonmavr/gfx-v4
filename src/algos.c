@@ -78,8 +78,8 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 			y = y1;
 			for (x = x1; x < x2; x++) {
 				gfx_point(x, y);
-				pt.pt.x = x;
-				pt.pt.y = y;
+				pt.point.x = x;
+				pt.point.y = y;
 				queue_append(q, &pt);
 				err += dy;
 				if (2*err >= dx){
@@ -93,8 +93,8 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 			x = x1;
 			for (y = y1; y < y2; y++) {
 				gfx_point(x, y);
-				pt.pt.x = x;
-				pt.pt.y = y;
+				pt.point.x = x;
+				pt.point.y = y;
 				queue_append(q, &pt);
 				err += dx;
 				if (2*err >= dy){
@@ -108,8 +108,8 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 			x = x1;
 			for (y = y1; y < y2; y++) {
 				gfx_point(x, y);
-				pt.pt.x = x;
-				pt.pt.y = y;
+				pt.point.x = x;
+				pt.point.y = y;
 				queue_append(q, &pt);
 				err -= dx;
 				if (2*err >= dy){
@@ -123,8 +123,8 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 			y = y1;
 			for (x = x1; x > x2; x--) {
 				gfx_point(x, y);
-				pt.pt.x = x;
-				pt.pt.y = y;
+				pt.point.x = x;
+				pt.point.y = y;
 				queue_append(q, &pt);
 				err += dy;
 				if (2*err >= -dx){
@@ -138,8 +138,8 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 			y = y1;
 			for (x = x1; x > x2; x--) {
 				gfx_point(x, y);
-				pt.pt.x = x;
-				pt.pt.y = y;
+				pt.point.x = x;
+				pt.point.y = y;
 				queue_append(q, &pt);
 				err -= dy;
 				if (2*err >= -dx){
@@ -153,8 +153,8 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 			x = x1;
 			for (y = y1; y > y2; y--) {
 				gfx_point(x, y);
-				pt.pt.x = x;
-				pt.pt.y = y;
+				pt.point.x = x;
+				pt.point.y = y;
 				queue_append(q, &pt);
 				err -= dx;
 				if (2*err >= -dy){
@@ -168,8 +168,8 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 			x = x1;
 			for (y = y1; y > y2; y--) {
 				gfx_point(x, y);
-				pt.pt.x = x;
-				pt.pt.y = y;
+				pt.point.x = x;
+				pt.point.y = y;
 				queue_append(q, &pt);
 				err += dx;
 				if (2*err >= -dy){
@@ -183,8 +183,8 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 			y = y1;
 			for (x = x1; x < x2; x++) {
 				gfx_point(x, y);
-				pt.pt.x = x;
-				pt.pt.y = y;
+				pt.point.x = x;
+				pt.point.y = y;
 				queue_append(q, &pt);
 				err -= dy;
 				if (2*err >= dx){
@@ -198,15 +198,15 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 			if (y1 < y2){
 				for (y = y1; y < y2; y++) {
 					gfx_point(x, y);	
-					pt.pt.x = x;
-					pt.pt.y = y;
+					pt.point.x = x;
+					pt.point.y = y;
 					queue_append(q, &pt);
 				}
 			} else {
 				for (y = y2; y < y1; y++) {
 					gfx_point(x, y);	
-					pt.pt.x = x;
-					pt.pt.y = y;
+					pt.point.x = x;
+					pt.point.y = y;
 					queue_append(q, &pt);
 				}
 			}
@@ -216,7 +216,7 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 
 
 void gfx_line_bres_col(Pixel* pt1, Pixel* pt2, Queue* q) {
-	gfx_line_bres(&pt1->pt, &pt2->pt, q);
+	gfx_line_bres(&pt1->point, &pt2->point, q);
 	int len = queue_length(q);
 	vec3u8_t col1 = pt1->colour;
 	vec3u8_t col2 = pt2->colour;
@@ -235,7 +235,7 @@ void gfx_line_bres_col(Pixel* pt1, Pixel* pt2, Queue* q) {
 		curr->colour.x = col_curr.x;
 		curr->colour.y = col_curr.y;
 		curr->colour.z = col_curr.z;
-		gfx_point(curr->pt.x, curr->pt.y);
+		gfx_point(curr->point.x, curr->point.y);
 		gfx_flush();
 		curr = curr->next;
 	}
@@ -245,7 +245,7 @@ void gfx_line_bres_col(Pixel* pt1, Pixel* pt2, Queue* q) {
 void gfx_triangle_fill_bres(Pixel* pt1, Pixel* pt2, Pixel* pt3,
 		Queue* q12, Queue* q13, Queue* q23) {
 	// Assume y1 <= y2 <= y3 !!!
-	assert((pt1->pt.y <= pt2->pt.y) && (pt2->pt.y <= pt3->pt.y));
+	assert((pt1->point.y <= pt2->point.y) && (pt2->point.y <= pt3->point.y));
 
 	gfx_line_bres_col(pt1, pt2, q12);
 	gfx_line_bres_col(pt1, pt3, q13);
@@ -265,7 +265,7 @@ void gfx_triangle_fill_bres(Pixel* pt1, Pixel* pt2, Pixel* pt3,
 		if (curr12 != NULL) {
 			// skip pixels that are on the same y
 			while (curr12->next != NULL) {
-				if (curr12->next->pt.y == curr12->pt.y)
+				if (curr12->next->point.y == curr12->point.y)
 					curr12 = curr12->next;
 				else
 					break;
@@ -276,7 +276,7 @@ void gfx_triangle_fill_bres(Pixel* pt1, Pixel* pt2, Pixel* pt3,
 		if (curr13 != NULL) {
 			// skip pixels that are on the same y
 			while (curr13->next != NULL) {
-				if (curr13->next->pt.y == curr13->pt.y)
+				if (curr13->next->point.y == curr13->point.y)
 					curr13 = curr13->next;
 				else
 					break;
@@ -295,7 +295,7 @@ void gfx_triangle_fill_bres(Pixel* pt1, Pixel* pt2, Pixel* pt3,
 		if (curr23 != NULL) {
 			// skip pixels that are on the same y
 			while (curr23->next != NULL) {
-				if (curr23->next->pt.y == curr23->pt.y)
+				if (curr23->next->point.y == curr23->point.y)
 					curr23 = curr23->next;
 				else
 					break;
@@ -306,7 +306,7 @@ void gfx_triangle_fill_bres(Pixel* pt1, Pixel* pt2, Pixel* pt3,
 		if (curr13 != NULL) {
 			// skip pixels that are on the same y
 			while (curr13->next != NULL) {
-				if (curr13->next->pt.y == curr13->pt.y)
+				if (curr13->next->point.y == curr13->point.y)
 					curr13 = curr13->next;
 				else
 					break;
