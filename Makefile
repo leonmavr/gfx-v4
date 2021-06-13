@@ -1,7 +1,7 @@
 CC = gcc
 IDIR = include
 SRCDIR = src
-CFLAGS = -g -c -I$(IDIR) -Wall
+CFLAGS = -g -c -I$(IDIR) -Wall -O2
 LFLAGS = -lX11 -lm
 
 all: example

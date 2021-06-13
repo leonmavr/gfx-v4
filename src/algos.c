@@ -15,14 +15,14 @@
 #define PERP_DOT(a, b, c, d) (a*d - c*b)
 
 
-static inline void vec3u_add(vec3u_t* result, vec3u_t* vec1, vec3u_t* vec2) {
+static inline void vec3u_add(vec3u8_t* result, vec3u8_t* vec1, vec3u8_t* vec2) {
 	result->x = vec1->x + vec2->x;	
 	result->y = vec1->y + vec2->y;	
 	result->z = vec1->z + vec2->z;	
 }
 
 
-static inline void vec3u_mul_float(vec3u_t* result, vec3u_t* vec1, float fl) {
+static inline void vec3u_mul_float(vec3u8_t* result, vec3u8_t* vec1, float fl) {
 	result->x = fl * vec1->x;
 	result->y = fl * vec1->y;
 	result->z = fl * vec1->z;
@@ -218,11 +218,11 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 void gfx_line_bres_col(Pixel* pt1, Pixel* pt2, Queue* q) {
 	gfx_line_bres(&pt1->pt, &pt2->pt, q);
 	int len = queue_length(q);
-	vec3u_t col1 = pt1->colour;
-	vec3u_t col2 = pt2->colour;
-	vec3u_t col1_curr = col1;
-	vec3u_t col2_curr = col2;
-	vec3u_t col_curr;
+	vec3u8_t col1 = pt1->colour;
+	vec3u8_t col2 = pt2->colour;
+	vec3u8_t col1_curr = col1;
+	vec3u8_t col2_curr = col2;
+	vec3u8_t col_curr;
 	Pixel* curr = q->head;
 
 	for (int i = 0; i < len; ++i) {

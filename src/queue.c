@@ -59,31 +59,6 @@ unsigned int queue_append(Queue* queue, Pixel* pt) {
 }
 
 
-
-/**
- * @brief Prints the contents of the queue from head to tail
- *
- * @param queue A Queue
- *
- * @return A positive integer if error, else 0
- */
-unsigned int queue_print(Queue* queue) {
-	if (queue_isEmpty(queue)) 
-		return ERROR_LIST_EMPTY;
-	Pixel* iter = queue->head;
-	if (iter == NULL)
-		return ERROR_CANNOT_ALLOC;
-	// do the work
-	do { 
-		geo_point_print(iter->pt);
-		iter  = iter->next;
-	} while (iter != NULL);
-
-	free(iter);
-	return NO_ERROR;
-}
-
-
 /**
  * @brief Remove the last element (at tail)
  *

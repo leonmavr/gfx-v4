@@ -7,7 +7,7 @@
 // TODO: rename this to Pixel, rename pt to point
 typedef struct node_t {
 	vec2i_t pt;
-	vec3u_t colour;
+	vec3u8_t colour;
     struct node_t* next;
 } Pixel;
 
@@ -19,7 +19,7 @@ typedef struct queue_t {
 
 
 unsigned int queue_append(Queue* queue, Pixel* pt);
-unsigned int queue_append_colour(Queue* queue, vec2i_t* pt, vec3u_t* colour);
+unsigned int queue_append_colour(Queue* queue, vec2i_t* pt, vec3u8_t* colour);
 unsigned int queue_del(Queue* queue);
 void queue_init(Queue* queue);
 unsigned int queue_isEmpty(Queue* queue);

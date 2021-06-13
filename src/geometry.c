@@ -7,10 +7,6 @@
 #define RAD2DEG(RAD) ((RAD) * 180.0 / PI)
 
 
-void geo_point_print(vec2i_t pt) {
-	printf("(%u, %u) ", pt.x, pt.y);
-}
-
 void geo_rotate(vec2i_t* pt, float deg) {
 	int x = pt->x, y = pt->y;
 	// TODO: precompute sine at 0-90 deg to optimise
