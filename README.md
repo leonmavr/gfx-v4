@@ -32,8 +32,6 @@ Run with
 ```
 ./example
 ```
-If everything is compiled correctly, you should see the following animation in a new window:
-![demo](https://raw.githubusercontent.com/0xLeo/gfx-v4/master/assets/demo_triangles.gif)
 
 Clean generated executables and object files with:
 ```
