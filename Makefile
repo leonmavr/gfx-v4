@@ -18,7 +18,7 @@ gfx.o: $(SRCDIR)/gfx.c
 geometry.o: $(SRCDIR)/geometry.c
 	$(CC) $(CFLAGS) $(SRCDIR)/geometry.c
 
-geometry.o: $(SRCDIR)/algos.c
+algos.o: $(SRCDIR)/algos.c
 	$(CC) $(CFLAGS) $(SRCDIR)/algos.c
 
 example.o: example.c
