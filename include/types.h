@@ -9,13 +9,14 @@ typedef struct vec2i_t {
 	int y;
 } vec2i_t;
 
+
 typedef struct vec3u8_t {
 	u8_t x;
 	u8_t y;
 	u8_t z;
 } vec3u8_t;
 
-// TODO: rename this to Pixel, rename pt to point
+
 typedef struct node_t {
 	vec2i_t point;
 	vec3u8_t colour;
