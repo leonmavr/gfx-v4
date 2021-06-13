@@ -1,6 +1,7 @@
 #ifndef ALGOS_H
 #define ALGOS_H 
 
+#include "types.h"
 
 /* Draw line using Bresenham's */
 void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q);

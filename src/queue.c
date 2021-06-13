@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "types.h" 
 #include "queue.h" 
 #include "geometry.h" 
 
@@ -66,22 +67,16 @@ unsigned int queue_append(Queue* queue, Pixel* pt) {
  *
  * @return A valid point (x, y, 1) if queue non empty, else invalid point, i.e. (x, y, 0)
  */
-vec2i_t queue_pop(Queue* queue) {
+void queue_pop(Pixel* result, Queue* queue) {
 	// if head next not null
 	Pixel* tmp = queue->head;
-	vec2i_t ret;
 	if (tmp != NULL) {
 		// get current point
-		ret = queue->head->pt;
+		result = queue->head;
 		// move to next and delete current
 		queue->head = queue->head->next;
 		free(tmp);
-	} else {
-		// empty list - then return invalid point
-		ret.x = 0;
-		ret.y = 0;
 	}
-	return ret;
 }
 
 
