@@ -5,15 +5,16 @@ A simple 2D graphics library in C for educational purposes. Originally written b
 
 
 The library has been modified to implement
-* Bresenham's line drawing algorithm
-* a couple of triangle fills
-* midpoint circle drawing algorithm
-* translations and rotations
+Compared to Prof Thain's original implementation, this library implements the following additions:
+- [x] Bresenham's line drawing algorithm
+- [x] a couple of triangle fills
+- [x] midpoint circle drawing algorithm
+- [x] translations and rotations  
+- [x] Triangle fill by colour smearing from the vertices  
 
-A Makefile was added as well.
-
-In the future I'm planning to
-* interpolate the colour of each triangle pixel from the colour of its vertices 
+Planned for the future:
+- [ ] Unit tests
+- [ ] Bezier curves
 
 ## Folder structure
 Source code is found in src directory. The animation played when the project is compiled and run is found in `example.c`.
