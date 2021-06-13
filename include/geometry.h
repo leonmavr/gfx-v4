@@ -2,8 +2,8 @@
 #define GEOMETRY_H 
 
 
-void geo_rotate(vec2i_t* pt, float deg);
-void geo_shift(vec2i_t* pt, int x, int y);
-void geo_rotateTriangle(vec2i_t* pt1, vec2i_t* pt2, vec2i_t* pt3, float theta);
+void geo_rotate(Pixel* pt, float deg);
+void geo_shift(Pixel* pt, int x, int y);
+void geo_rotateTriangle(Pixel* pt1, Pixel* pt2, Pixel* pt3, float theta);
 
 #endif /* GEOMETRY_H */

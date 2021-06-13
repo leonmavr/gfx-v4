@@ -41,8 +41,7 @@ int main()
 	Pixel pt1 = {{300, 20}, {255, 0, 0}};
 	Pixel pt2 = {{840, 650}, {0, 255, 0}};
 	Pixel pt3 = {{100, 800}, {0, 0, 255}};
-	//gfx_line_bres_col(&pt1, &pt2, q);
-	//gfx_line_bres(&tr11, &tr22, q);
+
 	gfx_triangle_fill_bres(&pt1, &pt2, &pt3, q12, q13, q23);
 
 	Queue* q45 = malloc(sizeof(Queue));
