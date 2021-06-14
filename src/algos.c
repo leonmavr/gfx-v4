@@ -242,6 +242,17 @@ void gfx_line_bres_col(Pixel* pt1, Pixel* pt2, Queue* q) {
 }
 
 
+/**
+ * @brief 	Draws a triangle whose every pixel is coloured based on the distance from
+ * 			each vertex.	
+ *
+ * @param pt1 A Pixel ((x, y), (r, g, ,b)) 
+ * @param pt2 A Pixel ((x, y), (r, g, ,b)) 
+ * @param pt3 A Pixel ((x, y), (r, g, ,b)) 
+ * @param q12 A Pixel ((x, y), (r, g, ,b)) 
+ * @param q13 A Pixel ((x, y), (r, g, ,b)) 
+ * @param q23 A Pixel ((x, y), (r, g, ,b)) 
+ */
 void gfx_triangle_fill_bres(Pixel* pt1, Pixel* pt2, Pixel* pt3,
 		Queue* q12, Queue* q13, Queue* q23) {
 	// Ensure y1 <= y2 <= y3 
@@ -293,7 +304,7 @@ void gfx_triangle_fill_bres(Pixel* pt1, Pixel* pt2, Pixel* pt3,
 		}
 	}
 	while ((curr23 != NULL) && (curr13 != NULL)) {
-		// top flat triangle
+		// bottom flat triangle
 		// update edge 23
 		if (curr23 != NULL) {
 			// skip pixels that are on the same y
