@@ -47,10 +47,13 @@ unsigned int queue_append(Queue* queue, Pixel* pt) {
 		next->colour = pt->colour;
 		next->next = NULL;
 		// initialise list with 1 node
-		queue->head = queue->tail = next; 
+		queue->head = next;
+		queue->tail = next; 
 	} else {
 		// add to tail
 		queue->tail->next = malloc(sizeof(Pixel));
+		if (queue->tail->next == NULL)
+			return ERROR_CANNOT_ALLOC;
 		queue->tail->next->next = NULL;
 		queue->tail->next->point = pt->point;
 		queue->tail->next->colour = pt->colour;
