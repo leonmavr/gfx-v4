@@ -387,17 +387,17 @@ bool is_interior(int x1, int y1, int x2, int y2, int x3, int y3, int x, int y) {
  * @param pt2 Vertex 2
  * @param pt3 Vertex 3
  */
-void gfx_triangle_fill_int_test(vec2i_t* pt1, vec2i_t* pt2, vec2i_t* pt3) {
+void gfx_triangle_fill_int_test(Pixel* pt1, Pixel* pt2, Pixel* pt3) {
 	// Ensure y1 <= y2 <= y3 
-	if (pt1->y > pt3->y)
+	if (pt1->point.y > pt3->point.y)
 		SWAP(*pt1, *pt3);
-	if (pt1->y > pt2->y)
+	if (pt1->point.y > pt2->point.y)
 		SWAP(*pt1, *pt2);
-	if (pt2->y > pt3->y)
+	if (pt2->point.y > pt3->point.y)
 		SWAP(*pt2, *pt3);
 	// scan the bounding box of the triangle
-	int x1 = pt1->x, x2 = pt2->x, x3 = pt3->x;
-	int y1 = pt1->y, y2 = pt2->y, y3 = pt3->y;
+	int x1 = pt1->point.x, x2 = pt2->point.x, x3 = pt3->point.x;
+	int y1 = pt1->point.y, y2 = pt2->point.y, y3 = pt3->point.y;
 	int xmin = MIN(MIN(x1, x2), x3);
 	int xmax = MAX(MAX(x1, x2), x3);
 	for (int y = y1; y < y3; ++y) {

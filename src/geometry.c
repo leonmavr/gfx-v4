@@ -16,6 +16,13 @@ void geo_rotate(Pixel* px, float deg) {
 	px->point.y = f_yNew; // cast to uint
 }
 
+void geo_rotateAboutAnohter(Pixel* current, Pixel* other, float deg) {
+	int cx = current->point.x, cy = current->point.y;
+	int ox = other->point.x, oy = other->point.y;
+	current->point.x = ox + cos(deg) * (cx - ox) - sin(deg) * (cy - oy);
+    current->point.y = oy + sin(deg) * (cx - ox) + cos(deg) * (cy - oy);
+}
+
 
 void geo_shift(Pixel* px, int x, int y){
 	px->point.x += x;
