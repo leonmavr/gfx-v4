@@ -244,8 +244,13 @@ void gfx_line_bres_col(Pixel* pt1, Pixel* pt2, Queue* q) {
 
 void gfx_triangle_fill_bres(Pixel* pt1, Pixel* pt2, Pixel* pt3,
 		Queue* q12, Queue* q13, Queue* q23) {
-	// Assume y1 <= y2 <= y3 !!!
-	assert((pt1->point.y <= pt2->point.y) && (pt2->point.y <= pt3->point.y));
+	// Ensure y1 <= y2 <= y3 
+	if (pt1->point.y > pt3->point.y)
+		SWAP(*pt1, *pt3);
+	if (pt1->point.y > pt2->point.y)
+		SWAP(*pt1, *pt2);
+	if (pt2->point.y > pt3->point.y)
+		SWAP(*pt2, *pt3);
 
 	gfx_line_bres_col(pt1, pt2, q12);
 	gfx_line_bres_col(pt1, pt3, q13);
@@ -257,8 +262,6 @@ void gfx_triangle_fill_bres(Pixel* pt1, Pixel* pt2, Pixel* pt3,
 	Pixel* curr23 = q23->head;
 
 	Queue* q = malloc(sizeof(Queue));
-	//Queue* q23 = malloc(sizeof(Queue));
-	//zcurr12 = curr12->next;
 	while (curr12 != NULL) {
 		// top flat triangle
 		// update edge 12
