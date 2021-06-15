@@ -1,7 +1,7 @@
 # gfx-v4
 
 ## About
-A simple 2D graphics library in C for educational purposes. Originally written by [Prof Douglas Thain](https://www3.nd.edu/~dthain/courses/cse20211/fall2013/gfx/).  
+A simple 2D graphics library in C for educational purposes. Its able to draw lines, circles, and solid triangles. Originally written by [Prof Douglas Thain](https://www3.nd.edu/~dthain/courses/cse20211/fall2013/gfx/).  
 
 Compared to Prof Thain's original implementation, this library implements the following additions:
 - [x] Bresenham's line drawing algorithm
