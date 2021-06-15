@@ -14,14 +14,8 @@ Planned for the future:
 - [ ] Unit tests
 - [ ] Bezier curves
 
-## Folder structure
-Source code is found in src directory. The animation played when the project is compiled and run is found in `example.c`.
-You can define your own animations there. Try creating an analogue clock.  
 
-By default, 3 triangles spinning clockwise about their centroids are rendered and shown.  
-
-
-## How to compile
+## How to compile and run
 On Linux, compile with
 ```
 make
@@ -30,8 +24,13 @@ Run with
 ```
 ./example
 ```
+This should output the following drawing:  
+
+<img src="https://github.com/0xLeo/gfx-v4/blob/master/assets/example_c.png " height="175" />
 
 Clean generated executables and object files with:
 ```
 make clean
 ```
+To change the output on the screen, edit `example.c`. Below is a more advanced drawing that demonstrates the library's capabilities.
+![](https://github.com/0xLeo/gfx-v4/blob/master/assets/triangle_fill.gif)
