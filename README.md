@@ -32,5 +32,6 @@ Clean generated executables and object files with:
 ```
 make clean
 ```
-To change the output on the screen, edit `example.c`. Below is a more advanced drawing that demonstrates the library's capabilities.
+To change the output on the screen, edit `example.c`. Below is a more advanced drawing that demonstrates the library's capabilities.  
+
 ![](https://github.com/0xLeo/gfx-v4/blob/master/assets/triangle_fill.gif)
