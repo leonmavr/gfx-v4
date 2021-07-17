@@ -85,7 +85,7 @@ void gfx_point( int x, int y )
 
 
 /* Draw a line from (x1,y1) to (x2,y2) */
-void algos_line( int x1, int y1, int x2, int y2 )
+void gfx_line( int x1, int y1, int x2, int y2 )
 {
 	XDrawLine(gfx_display, gfx_window, gfx_gc, x1, y1, x2, y2);
 }

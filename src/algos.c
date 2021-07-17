@@ -59,7 +59,7 @@ static unsigned int gfx_findOctant(const vec2i_t* pt1, const vec2i_t* pt2) {
 
 
 /* Draw a line from (x1,y1) to (x2,y2) using Bresenham's */
-void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
+void algos_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 {
     int x1 = pt1->x;
     int y1 = pt1->y;
@@ -215,8 +215,8 @@ void gfx_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 }
 
 
-void gfx_line_bres_col(Pixel* pt1, Pixel* pt2, Queue* q) {
-    gfx_line_bres(&pt1->point, &pt2->point, q);
+void algos_line_bres_col(Pixel* pt1, Pixel* pt2, Queue* q) {
+    algos_line_bres(&pt1->point, &pt2->point, q);
     int len = queue_length(q);
     vec3u8_t col1 = pt1->colour;
     vec3u8_t col2 = pt2->colour;
@@ -252,7 +252,7 @@ void gfx_line_bres_col(Pixel* pt1, Pixel* pt2, Queue* q) {
  * @param q13 A Pixel ((x, y), (r, g, ,b)) 
  * @param q23 A Pixel ((x, y), (r, g, ,b)) 
  */
-void gfx_triangle_fill_bres(Pixel* pt1, Pixel* pt2, Pixel* pt3,
+void algos_triangle_fill_bres(Pixel* pt1, Pixel* pt2, Pixel* pt3,
             Queue* q12, Queue* q13, Queue* q23) {
     // Ensure y1 <= y2 <= y3 
     if (pt1->point.y > pt3->point.y)
@@ -262,9 +262,9 @@ void gfx_triangle_fill_bres(Pixel* pt1, Pixel* pt2, Pixel* pt3,
     if (pt2->point.y > pt3->point.y)
         SWAP(*pt2, *pt3);
 
-    gfx_line_bres_col(pt1, pt2, q12);
-    gfx_line_bres_col(pt1, pt3, q13);
-    gfx_line_bres_col(pt2, pt3, q23);
+    algos_line_bres_col(pt1, pt2, q12);
+    algos_line_bres_col(pt1, pt3, q13);
+    algos_line_bres_col(pt2, pt3, q23);
 
     // for each pixel in q12, find its interpolated colour and do putPixel
     Pixel* curr12 = q12->head;
@@ -302,7 +302,7 @@ void gfx_triangle_fill_bres(Pixel* pt1, Pixel* pt2, Pixel* pt3,
         }
 
         if (curr12 != NULL) {
-            gfx_line_bres_col(curr12, curr13, q);
+            algos_line_bres_col(curr12, curr13, q);
             queue_del(q);
         }
         i++;
@@ -311,7 +311,7 @@ void gfx_triangle_fill_bres(Pixel* pt1, Pixel* pt2, Pixel* pt3,
         // bottom flat triangle
         // update edge 23
         if ((curr23 != NULL) && (curr13 != NULL)) {
-            gfx_line_bres_col(curr23, curr13, q);
+            algos_line_bres_col(curr23, curr13, q);
             queue_del(q);
         }
         if (curr23 != NULL) {
@@ -340,7 +340,7 @@ void gfx_triangle_fill_bres(Pixel* pt1, Pixel* pt2, Pixel* pt3,
 }
 
 /* Triangle fill by line sweep: https://www.cs.princeton.edu/courses/archive/fall00/cs426/lectures/scan/sld013.htm, https://www.youtube.com/watch?v=MIW3ljGisak */ 
-void gfx_triangle_fill_sweep(vec2i_t* pt1, vec2i_t* pt2, vec2i_t* pt3) {
+void algos_triangle_fill_sweep(vec2i_t* pt1, vec2i_t* pt2, vec2i_t* pt3) {
     float x1 = pt1->x, y1 = pt1->y;
     float x2 = pt1->x, y2 = pt1->y;
     float x3 = pt1->x, y3 = pt1->y;
@@ -392,7 +392,7 @@ bool is_interior(int x1, int y1, int x2, int y2, int x3, int y3, int x, int y) {
  * @param pt2 Vertex 2
  * @param pt3 Vertex 3
  */
-void gfx_triangle_fill_int_test(Pixel* pt1, Pixel* pt2, Pixel* pt3) {
+void algos_triangle_fill_int_test(Pixel* pt1, Pixel* pt2, Pixel* pt3) {
     // Ensure y1 <= y2 <= y3 
     if (pt1->point.y > pt3->point.y)
         SWAP(*pt1, *pt3);
@@ -421,7 +421,7 @@ void gfx_triangle_fill_int_test(Pixel* pt1, Pixel* pt2, Pixel* pt3) {
  * @param y0 y-coordinate of centre
  * @param r radius
  */
-void gfx_circle(int x0, int y0, int r) {
+void algos_circle(int x0, int y0, int r) {
     int x = 0;
     int y = r;
     int dec = 1 - r;
