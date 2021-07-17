@@ -215,6 +215,7 @@ void algos_line_bres(const vec2i_t* pt1, const vec2i_t* pt2, Queue* q)
 }
 
 
+/* Draw a gradient-coloured straight line */
 void algos_line_bres_col(Pixel* pt1, Pixel* pt2, Queue* q) {
     algos_line_bres(&pt1->point, &pt2->point, q);
     int len = queue_length(q);
@@ -241,17 +242,7 @@ void algos_line_bres_col(Pixel* pt1, Pixel* pt2, Queue* q) {
 }
 
 
-/**
- * @brief 	Draws a triangle whose every pixel is coloured based on the distance from
- * 			each vertex.	
- *
- * @param pt1 A Pixel ((x, y), (r, g, ,b)) 
- * @param pt2 A Pixel ((x, y), (r, g, ,b)) 
- * @param pt3 A Pixel ((x, y), (r, g, ,b)) 
- * @param q12 A Pixel ((x, y), (r, g, ,b)) 
- * @param q13 A Pixel ((x, y), (r, g, ,b)) 
- * @param q23 A Pixel ((x, y), (r, g, ,b)) 
- */
+/* Draw a multicoloured triangle */
 void algos_triangle_fill_bres(Pixel* pt1, Pixel* pt2, Pixel* pt3,
             Queue* q12, Queue* q13, Queue* q23) {
     // Ensure y1 <= y2 <= y3 
@@ -374,24 +365,21 @@ bool is_interior(int x1, int y1, int x2, int y2, int x3, int y3, int x, int y) {
     int pp3_x = x3 - x;
     int pp3_y = y3 - y;
     return 
-    // cw case
-    ( ((PERP_DOT(pp1_x, pp1_y, pp2_x, pp2_y) < 0) &&
-    (PERP_DOT(pp2_x, pp2_y, pp3_x, pp3_y) < 0) &&
-    (PERP_DOT(pp3_x, pp3_y, pp1_x, pp1_y) < 0))  ||
-    // ccw case
-    ((PERP_DOT(pp1_x, pp1_y, pp2_x, pp2_y) > 0) &&
-    (PERP_DOT(pp2_x, pp2_y, pp3_x, pp3_y) > 0) &&
-    (PERP_DOT(pp3_x, pp3_y, pp1_x, pp1_y) > 0)) );
+        // cw case
+        ( ((PERP_DOT(pp1_x, pp1_y, pp2_x, pp2_y) < 0) &&
+        (PERP_DOT(pp2_x, pp2_y, pp3_x, pp3_y) < 0) &&
+        (PERP_DOT(pp3_x, pp3_y, pp1_x, pp1_y) < 0))  ||
+        // ccw case
+        ((PERP_DOT(pp1_x, pp1_y, pp2_x, pp2_y) > 0) &&
+        (PERP_DOT(pp2_x, pp2_y, pp3_x, pp3_y) > 0) &&
+        (PERP_DOT(pp3_x, pp3_y, pp1_x, pp1_y) > 0)) );
 }
 
 
 /**
- * @brief Fills a triangle given 3 points
- *
- * @param pt1 Vertex 1
- * @param pt2 Vertex 2
- * @param pt3 Vertex 3
- */
+ * Draw a solid triangle using the interior test for each point in
+ * its bounding box
+ */ 
 void algos_triangle_fill_int_test(Pixel* pt1, Pixel* pt2, Pixel* pt3) {
     // Ensure y1 <= y2 <= y3 
     if (pt1->point.y > pt3->point.y)
@@ -412,15 +400,7 @@ void algos_triangle_fill_int_test(Pixel* pt1, Pixel* pt2, Pixel* pt3) {
     }
 }
 
-
-/**
- * @brief	Draws a circle using midpoint algorithm
- * 		Explanation: https://github.com/0xLeo/journal/blob/master/graphics/shape_raster/pdf/shape_raster.pdf	
- *
- * @param x0 x-coordinate of centre
- * @param y0 y-coordinate of centre
- * @param r radius
- */
+/* Draw a circle using the midpoint algorithm */
 void algos_circle(int x0, int y0, int r) {
     int x = 0;
     int y = r;
@@ -460,6 +440,7 @@ static void bezierComputePoint(const Pixel* pixelArray, const unsigned n, float 
 
 void algos_bezier(const Pixel* pixelArray, const unsigned n, const float dt)
 {
+    assert((0.0 < dt) && (dt < 1.0));
     float t = 0.0;
     while (t < 1.0) {
         bezierComputePoint(pixelArray, n, t);

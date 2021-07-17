@@ -1,19 +1,21 @@
 # gfx-v4
 
 ## About
-A simple 2D graphics library in C for educational purposes. Its able to draw lines, circles, and solid triangles. Originally written by [Prof Douglas Thain](https://www3.nd.edu/~dthain/courses/cse20211/fall2013/gfx/).  
+A simple 2D graphics library in C for educational purposes. It's written on top of the X desktop manager. It's able to draw lines (straight or curvy), circles, and triangles. Originally written by [Prof Douglas Thain](https://www3.nd.edu/~dthain/courses/cse20211/fall2013/gfx/).  
 
 Compared to Prof Thain's original implementation, this library implements the following additions:
 - [x] Bresenham's line drawing algorithm
 - [x] a couple of triangle fills
 - [x] midpoint circle drawing algorithm
-- [x] translations and rotations  
-- [x] Triangle fill by colour smearing from the vertices  
+- [x] point translations and rotations
+- [x] Triangle fill by colour smearing from the vertices
+- [x] Bezier curves (by De Chasteljau's algorithm)
 
 Planned for the future:
+- [ ] A directory which contains examples that showcase each algo I implemented instead of a central `example.c` file
 - [ ] Unit tests
-- [ ] Bezier curves
 
+If some algorithm is not straightforward, the source code is complemented by [these notes](https://github.com/0xLeo/journal/tree/master/graphics).
 
 ## How to compile and run
 On Linux, compile with

@@ -3,6 +3,8 @@ A simple example of using the gfx library.
 CSE 20211
 9/7/2011
 by Prof. Thain
+17/07/2021
+by Leontios Mavropalias
 */
 
 #include <stdio.h>
@@ -39,7 +41,7 @@ int main()
 	Pixel pt2 = {{840, 650}, {0, 255, 0}};
 	Pixel pt3 = {{100, 800}, {0, 0, 255}};
 
-	gfx_triangle_fill_bres(&pt1, &pt2, &pt3, q12, q13, q23);
+	algos_triangle_fill_bres(&pt1, &pt2, &pt3, q12, q13, q23);
 
 	Queue* q45 = malloc(sizeof(Queue));
 	Queue* q46 = malloc(sizeof(Queue));
@@ -50,7 +52,7 @@ int main()
 	Pixel pt4 = {{800, 80}, {0, 0, 255}};
 	Pixel pt5 = {{500, 300}, {0, 255, 0}};
 	Pixel pt6 = {{700, 600}, {255, 0, 0}};
-	gfx_triangle_fill_bres(&pt4, &pt5, &pt6, q45, q46, q56);
+	algos_triangle_fill_bres(&pt4, &pt5, &pt6, q45, q46, q56);
 
 	gfx_flush();
 	sleep(5);
